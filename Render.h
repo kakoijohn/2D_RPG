@@ -11,6 +11,8 @@
 
 #endif /* defined(__RPGGameEngine__Render__) */
 
+#include "PlatformerPlaneRender.h"
+
 class Render {
 public:
 	Render();

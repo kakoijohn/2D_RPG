@@ -13,8 +13,9 @@ Render::Render() {
 }
 
 int Render::init() {
-    
     return 0;
+    
+    
 }
 
 void Render::updateDisplay(int width, int height) {

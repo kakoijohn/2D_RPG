@@ -15,5 +15,10 @@
 
 class BodyPart {
 public:
-    BodyPart();
+    BodyPart(int, int, int, int);
+    
+    
+    void freeResources();
+private:
+    int height, width, pivotX, pivotY;
 };

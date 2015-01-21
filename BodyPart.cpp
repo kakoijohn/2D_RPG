@@ -7,3 +7,15 @@
 //
 
 #include "BodyPart.h"
+
+BodyPart::BodyPart(int width, int height, int pivotX, int pivotY) {
+    this->width = width;
+    this->height = height;
+    
+    this->pivotX = pivotX;
+    this->pivotY = pivotY;
+}
+
+void BodyPart::freeResources() {
+    
+}

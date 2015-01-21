@@ -34,4 +34,5 @@ void Render::updateDisplay(int width, int height) {
 
 void Render::freeResources() {
     SDL_DestroyRenderer(SDLRender);
+    SDL_DestroyTexture(tex);
 }

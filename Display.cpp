@@ -47,22 +47,14 @@ void Display::createWindow(int width, int height) {
     
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
     
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    
     //create window
-    auto window = SDL_CreateWindow("RPG Game Engine", 4, 4, width, height, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
+    SDL_Window *window = SDL_CreateWindow("RPG Game Engine", 4, 4, width, height, SDL_WINDOW_SHOWN);
     
     if (window == 0)
         SDL_Quit();
-	
-	//setup openGL
-	auto gl = SDL_GL_CreateContext(window);
+    
     std::unique_ptr<Render> render = std::unique_ptr<Render>(new Render());
+    render->init(window);
     
 	//event handlers
 	SDL_AddEventWatch(EventFilter, nullptr);
@@ -81,12 +73,9 @@ void Display::createWindow(int width, int height) {
         }
 		
 		render->updateDisplay(width, height);
-		
-		SDL_GL_SwapWindow(window);
     }
     
 	render->freeResources();
-	SDL_GL_DeleteContext(gl);
 	
 	//close window and clean up
     SDL_DestroyWindow(window);

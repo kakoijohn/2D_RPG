@@ -9,8 +9,11 @@
 #ifndef __RPGGameEngine__Display__
 #define __RPGGameEngine__Display__
 
-#include <iostream>
-#include <SDL2/SDL.h>
+#include "iostream"
+#include "SDL2/SDL.h"
+#include "OpenGL/gl3.h"
+
+#include "Render.h"
 
 #endif /* defined(__RPGGameEngine__Display__) */
 

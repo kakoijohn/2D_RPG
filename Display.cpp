@@ -5,9 +5,8 @@
 //  Created by John Damits on 8/15/14.
 //  Copyright (c) 2014 Squirrely Brace. All rights reserved.
 //
-#include "Display.h"
 
-#include "Render.h"
+#include "Display.h"
 
 Display::Display(int width, int height) {
     createWindow(width, height);
@@ -63,7 +62,7 @@ void Display::createWindow(int width, int height) {
 	
 	//setup openGL
 	auto gl = SDL_GL_CreateContext(window);
-	std::unique_ptr<Render> render = std::unique_ptr<Render>(new Render());
+    std::unique_ptr<Render> render = std::unique_ptr<Render>(new Render());
     
 	//event handlers
 	SDL_AddEventWatch(EventFilter, nullptr);

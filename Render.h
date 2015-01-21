@@ -12,6 +12,8 @@
 #endif /* defined(__RPGGameEngine__Render__) */
 
 #include "PlatformerPlaneRender.h"
+#include "SDL2/SDL.h"
+#include "OpenGL/gl3.h"
 
 class Render {
 public:
@@ -20,4 +22,5 @@ public:
 	void freeResources();
 private:
 	int init();
+    GLuint LoadShaders(const char*, const char*);
 };

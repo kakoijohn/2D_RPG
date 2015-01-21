@@ -10,15 +10,17 @@
 #define ___D_RPG__BodyPart__
 
 #include <stdio.h>
+#include "Point.h"
 
 #endif /* defined(___D_RPG__BodyPart__) */
 
 class BodyPart {
 public:
-    BodyPart(int, int, int, int);
-    
+    BodyPart(float, float, Point, Point);
+    BodyPart(float, float, Point, Point, Point);
     
     void freeResources();
 private:
-    int height, width, pivotX, pivotY;
+    float height, width, rotation;
+    Point position, pivot1, pivot2;
 };

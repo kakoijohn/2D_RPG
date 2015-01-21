@@ -11,16 +11,13 @@
 
 #endif /* defined(__RPGGameEngine__Render__) */
 
-#include "PlatformerPlaneRender.h"
+#include "iostream"
 #include "SDL2/SDL.h"
-#include "OpenGL/gl3.h"
 
 class Render {
 public:
 	Render();
+    int init(SDL_Window*);
 	void updateDisplay(int, int);
 	void freeResources();
-private:
-	int init();
-    GLuint LoadShaders(const char*, const char*);
 };

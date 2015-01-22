@@ -13,17 +13,13 @@
 
 #endif /* defined(___D_RPG__Point__) */
 
-class Point {
-public:
-    Point();
-    Point(int, int);
-    
-    float getX();
-    float getY();
-    
-    void setX(float);
-    void setY(float);
-    void setPoint(float, float);
-private:
-    float x, y;
+struct Point {
+    float x;
+    float y;
+};
+
+struct Rect {
+    float height;
+    float width;
+    float rotation;
 };

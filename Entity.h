@@ -10,17 +10,21 @@
 #define ___D_RPG__BodyPart__
 
 #include <stdio.h>
-#include "Point.h"
+#include "iostream"
+#include "Structures.h"
+#include "math.h"
 
 #endif /* defined(___D_RPG__BodyPart__) */
 
-class BodyPart {
+class Entity {
 public:
-    BodyPart(float, float, Point, Point);
-    BodyPart(float, float, Point, Point, Point);
+    Entity(Rect, Point, Point, Point);
+    
+    void rotate(float);
+    bool isColliding(Entity);
     
     void freeResources();
-private:
-    float height, width, rotation;
-    Point position, pivot1, pivot2;
+    
+    Rect rectangle;
+    Point position, pivot, anchor;
 };

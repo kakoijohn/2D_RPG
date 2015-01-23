@@ -19,12 +19,17 @@
 class Entity {
 public:
     Entity(Rect, Point, Point, Point);
+    Entity(Rect, Point, Point, Point, float);
     
     void rotate(float);
-    bool isColliding(Entity);
+    bool isColliding(Rect);
     
     void freeResources();
     
     Rect rectangle;
-    Point position, pivot, anchor;
+    Point pivot, anchor;
+private:
+    bool basicCollision(Rect);
+    float min(float, float, float, float);
+    float max(float, float, float, float);
 };

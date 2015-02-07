@@ -55,7 +55,7 @@ void Render::updateDisplay(int width, int height) {
     triangle1.rotate(.01, {200, 200});
     
     triangle2.render(SDLRender);
-    triangle2.rotate(-.01, {300, 300});
+    triangle2.rotate(-.01, {250, 250});
     
     SDL_SetRenderDrawColor(SDLRender, 0, 0, 0, 255);
     

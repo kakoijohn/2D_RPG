@@ -10,6 +10,7 @@
 #define ___D_RPG__Polygon__
 
 #include <stdio.h>
+#include "SDL2/SDL.h"
 #include "Structures.h"
 #include "math.h"
 
@@ -17,8 +18,13 @@
 
 class Polygon {
 public:
+    Point *vert;
+    
     Polygon(int);
     void freeResources();
     void rotate(float, Point);
     void move(Point);
+    void render(SDL_Renderer*);
+private:
+    int vertecies;
 };

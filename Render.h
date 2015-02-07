@@ -13,6 +13,7 @@
 
 #include "iostream"
 #include "SDL2/SDL.h"
+#include "Polygon.h"
 
 class Render {
 public:

@@ -71,8 +71,8 @@ void Display::createWindow(int width, int height) {
                     break;
             }
         }
-		
-		render->updateDisplay(width, height);
+        
+        render->updateDisplay(width, height);
     }
     
 	render->freeResources();

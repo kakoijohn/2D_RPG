@@ -18,14 +18,8 @@ struct Point {
     float y;
 };
 
-struct Rect {
-    float height;
-    float width;
-    float rotation;
-    
-    //corners rotating clockwise around rectangle.
-    Point corner1;
-    Point corner2;
-    Point corner3;
-    Point corner4;
+struct Circle {
+    Point center;
+    float rot;
+    float rad;
 };

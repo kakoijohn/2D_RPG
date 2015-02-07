@@ -10,7 +10,8 @@
 
 SDL_Renderer *SDLRender;
 SDL_Surface *bmp;
-Polygon triangle(2);
+Polygon triangle1(3);
+Polygon triangle2(3);
 
 Render::Render() {
 
@@ -20,12 +21,20 @@ void Render::freeResources() {
     SDL_DestroyRenderer(SDLRender);
     SDL_FreeSurface(bmp);
     
-    triangle.freeResources();
+    triangle1.freeResources();
+    triangle2.freeResources();
 }
 
 int Render::init(SDL_Window *window) {
-    triangle.vert[0] = {150, 150};
-    triangle.vert[1] = {250, 250};
+    triangle1.vert[0] = {150, 150};
+    triangle1.vert[1] = {250, 250};
+    triangle1.vert[2] = {250, 150};
+    
+    triangle2.vert[0] = {150, 150};
+    triangle2.vert[1] = {250, 250};
+    triangle2.vert[2] = {250, 150};
+    
+    triangle2.move({50, 50});
     
     SDLRender = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     
@@ -37,11 +46,16 @@ int Render::init(SDL_Window *window) {
 void Render::updateDisplay(int width, int height) {
     SDL_RenderClear(SDLRender);
     
-    SDL_SetRenderDrawColor(SDLRender, 255, 0, 0, 255);
+    if (Collision::isColliding(triangle1, triangle2))
+        SDL_SetRenderDrawColor(SDLRender, 255, 0, 0, 255);
+    else
+        SDL_SetRenderDrawColor(SDLRender, 0, 255, 0, 255);
     
-    triangle.render(SDLRender);
-    triangle.rotate(.1, {200, 200});
-    triangle.move({1, 1});
+    triangle1.render(SDLRender);
+    triangle1.rotate(.01, {200, 200});
+    
+    triangle2.render(SDLRender);
+    triangle2.rotate(-.01, {300, 300});
     
     SDL_SetRenderDrawColor(SDLRender, 0, 0, 0, 255);
     

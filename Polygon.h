@@ -25,6 +25,5 @@ public:
     void rotate(float, Point);
     void move(Point);
     void render(SDL_Renderer*);
-private:
     int vertecies;
 };

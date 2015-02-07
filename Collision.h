@@ -10,5 +10,16 @@
 #define ___D_RPG__Collision__
 
 #include <stdio.h>
+#include "Polygon.h"
+#include "limits"
+#include "math.h"
 
 #endif /* defined(___D_RPG__Collision__) */
+
+class Collision {
+public:
+    Collision();
+    static bool isColliding(Polygon, Polygon);
+private:
+    static bool oneCollide(Polygon, Polygon);
+};

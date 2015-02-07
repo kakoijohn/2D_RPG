@@ -10,10 +10,15 @@
 
 SDL_Renderer *SDLRender;
 SDL_Surface *bmp;
-SDL_Texture *tex;
+
 
 Render::Render() {
     
+}
+
+void Render::freeResources() {
+    SDL_DestroyRenderer(SDLRender);
+    SDL_FreeSurface(bmp);
 }
 
 int Render::init(SDL_Window *window) {
@@ -32,7 +37,3 @@ void Render::updateDisplay(int width, int height) {
     SDL_RenderPresent(SDLRender);
 }
 
-void Render::freeResources() {
-    SDL_DestroyRenderer(SDLRender);
-    SDL_DestroyTexture(tex);
-}

@@ -17,3 +17,22 @@ Polygon::Polygon(int vertecies) {
 void Polygon::freeResources() {
     delete vert;
 }
+
+void Polygon::rotate(float rad, Point point) {
+    for (int i = 0; i < sizeof(vert); i++) {
+        float distance = sqrtf(powf((point.x - vert[i].x), 2) + powf((point.y - vert[i].y), 2));
+        float theta = atan2f(vert[i].y, vert[i].y);
+
+        theta += rad;
+        
+        vert[i].x = point.x + distance * cosf(theta);
+        vert[i].y = point.y + distance * sinf(theta);
+    }
+}
+
+void Polygon::move(Point delta) {
+    for (int i = 0; i < sizeof(vert); i++) {
+        vert[i].x += delta.x;
+        vert[i].y += delta.y;
+    }
+}

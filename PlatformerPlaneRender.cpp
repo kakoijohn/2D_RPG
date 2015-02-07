@@ -12,14 +12,14 @@ PlatformerPlaneRender::PlatformerPlaneRender() {
     
 }
 
+void PlatformerPlaneRender::freeResources() {
+    
+}
+
 int PlatformerPlaneRender::init() {
     return 0;
 }
 
 void PlatformerPlaneRender::updateDisplay(bool active, int width, int height) {
-    
-}
-
-void PlatformerPlaneRender::freeResources() {
     
 }

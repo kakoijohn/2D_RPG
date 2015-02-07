@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "Structures.h"
+#include "math.h"
 
 #endif /* defined(___D_RPG__Polygon__) */
 
@@ -18,4 +19,6 @@ class Polygon {
 public:
     Polygon(int);
     void freeResources();
+    void rotate(float, Point);
+    void move(Point);
 };

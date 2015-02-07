@@ -20,6 +20,6 @@ struct Point {
 
 struct Circle {
     Point center;
-    float rot;
-    float rad;
+    float rotation;
+    float radius;
 };

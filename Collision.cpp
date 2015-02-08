@@ -26,9 +26,14 @@ bool Collision::oneCollide(Polygon shapeA, Polygon shapeB) {
         float Vx;
         float Vy;
         
-        Vx = shapeA.vert[a].x - shapeA.vert[a + 1].x;
-        Vy = shapeA.vert[a].y - shapeA.vert[a + 1].y;
-        
+        if (a == shapeA.vertecies - 1) {
+            Vx = shapeA.vert[a].x - shapeA.vert[0].x;
+            Vy = shapeA.vert[a].y - shapeA.vert[0].y;
+        } else {
+            Vx = shapeA.vert[a].x - shapeA.vert[a + 1].x;
+            Vy = shapeA.vert[a].y - shapeA.vert[a + 1].y;
+        }
+
         float TAmin = std::numeric_limits<float>::max();
         float TAmax = std::numeric_limits<float>::min();
         

@@ -12,32 +12,6 @@ Display::Display(int width, int height) {
     createWindow(width, height);
 }
 
-//Event Filter
-//Polls events earlier in the thread so that it updates immediately each frame with no buffer. Much more efficient than using SDL_Event.
-int EventFilter(void* userData, SDL_Event* event) {
-    switch (event->type) {
-        case SDL_KEYDOWN:
-            SDL_Log("Key Down %d", event->key.keysym.sym);
-            return 0;
-        case SDL_KEYUP:
-            SDL_Log("Key Up %d", event->key.keysym.sym);
-            return 0;
-        case SDL_MOUSEMOTION:
-            SDL_Log("Mouse Moved. X=%d, Y=%d, Relative Y=%d", event->motion.x, event->motion.y, event->motion.yrel);
-            return 0;
-        case SDL_MOUSEBUTTONDOWN:
-            SDL_Log("Mouse Button Down %d", event->button.button);
-            return 0;
-        case SDL_MOUSEBUTTONUP:
-            SDL_Log("Mouse Button Up %d", event->button.button);
-            return 0;
-        case SDL_MOUSEWHEEL:
-            SDL_Log("Mouse Wheel");
-            return 0;
-    }
-    
-    return 1;
-}
 
 //create window
 void Display::createWindow(int width, int height) {
@@ -53,11 +27,12 @@ void Display::createWindow(int width, int height) {
     if (window == 0)
         SDL_Quit();
     
+    
     std::unique_ptr<Render> render = std::unique_ptr<Render>(new Render());
     render->init(window);
     
 	//event handlers
-	SDL_AddEventWatch(EventFilter, nullptr);
+    SDL_AddEventWatch(EventLog::EventFilter, nullptr);
     SDL_Event event;
 	
 	//display loop

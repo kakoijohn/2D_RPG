@@ -28,7 +28,7 @@ void Polygon::rotate(float rad, Point point) {
         vert[i].y = point.y + distance * sinf(theta);
     }
 }
-
+\
 void Polygon::move(Point delta) {
     for (int i = 0; i < vertecies; i++) {
         vert[i].x += delta.x;

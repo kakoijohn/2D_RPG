@@ -33,6 +33,7 @@ void Display::createWindow(int width, int height) {
     
 	//event handlers
     SDL_AddEventWatch(EventLog::EventFilter, nullptr);
+    SDL_AddEventWatch(MouseInput::MouseEventFilter, nullptr);
     SDL_Event event;
 	
 	//display loop
@@ -40,14 +41,13 @@ void Display::createWindow(int width, int height) {
     while (!done) {
         SDL_PumpEvents();
         while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    done = true;
-                    break;
+            if (event.type == SDL_QUIT) {
+                done = true;
+                break;
             }
         }
         
-        render->updateDisplay(width, height);
+        render->updateDisplay();
     }
     
 	render->freeResources();

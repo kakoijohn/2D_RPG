@@ -43,7 +43,7 @@ int Render::init(SDL_Window *window) {
     return 0;
 }
 
-void Render::updateDisplay(int width, int height) {
+void Render::updateDisplay() {
     SDL_RenderClear(SDLRender);
     
     if (Collision::isColliding(triangle1, triangle2))

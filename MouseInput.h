@@ -10,5 +10,11 @@
 #define ___D_RPG__MouseInput__
 
 #include <stdio.h>
+#include "SDL2/SDL.h"
 
 #endif /* defined(___D_RPG__MouseInput__) */
+
+class MouseInput {
+public:
+    static int MouseEventFilter(void*, SDL_Event*);
+};

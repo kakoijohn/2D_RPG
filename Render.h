@@ -19,6 +19,6 @@ class Render {
 public:
 	Render();
     int init(SDL_Window*);
-	void updateDisplay(int, int);
+	void updateDisplay();
 	void freeResources();
 };

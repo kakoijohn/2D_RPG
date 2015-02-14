@@ -33,7 +33,7 @@ void Display::createWindow(int width, int height) {
     
 	//event handlers
     SDL_AddEventWatch(EventLog::EventFilter, nullptr);
-    SDL_AddEventWatch(MouseInput::MouseEventFilter, nullptr);
+//    SDL_AddEventWatch(MouseInput::MouseEventFilter, nullptr);
     SDL_Event event;
 	
 	//display loop

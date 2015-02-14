@@ -1,0 +1,15 @@
+{
+    "game_states": [
+    {
+        "id": "default",
+        "key_bindings": [
+                    {
+                         "action": "polygon_move",
+                         "key_binding": 1025;
+                         "normalization": 1;
+                         "modifier": "left_mouse_down";
+                    }
+        ]
+    }
+    ]
+}

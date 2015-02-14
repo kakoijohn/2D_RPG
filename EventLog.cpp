@@ -16,7 +16,7 @@ int EventLog::EventFilter(void* userData, SDL_Event* event) {
             SDL_Log("Mouse Moved. X=%d, Y=%d, Relative Y=%d", event->motion.x, event->motion.y, event->motion.yrel);
             return 0;
         case SDL_MOUSEBUTTONDOWN:
-            SDL_Log("Mouse Button Down %d", event->button.button);
+            SDL_Log("Mouse Button Down %d, %d", event->button.clicks, SDL_MOUSEBUTTONDOWN);
             return 0;
         case SDL_MOUSEBUTTONUP:
             SDL_Log("Mouse Button Up %d", event->button.button);

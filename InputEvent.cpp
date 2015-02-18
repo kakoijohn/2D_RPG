@@ -10,11 +10,14 @@
 
 rapidjson::Document InputEvent::KeyBindings;
 std::vector<eventData> InputEvent::checkValues;
+std::vector<char*> activeEvents;
 
 int InputEvent::EventFilter(void* userData, SDL_Event* event) {
     if (!checkValues.empty())
         for (int i = 0; i < checkValues.size(); i++) {
             if (event->type == checkValues.at(i).key_binding)
+                if (strncmp(checkValues.at(i).modifier, "", 0) == 0)
+
                 std::cout << "Event Handled: " << checkValues.at(i).action << "\n";
         }
 

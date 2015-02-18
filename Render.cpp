@@ -9,7 +9,6 @@
 #include "Render.h"
 
 SDL_Renderer *SDLRender;
-SDL_Surface *bmp;
 Polygon triangle1(3);
 Polygon triangle2(3);
 
@@ -31,8 +30,6 @@ int Render::init(SDL_Window *window) {
     triangle2.move({50, 50});
     
     SDLRender = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    
-    bmp = SDL_LoadBMP("BaltImage.bmp");
     
     return 0;
 }
@@ -58,6 +55,5 @@ void Render::updateDisplay() {
 
 void Render::freeResources() {
     SDL_DestroyRenderer(SDLRender);
-    SDL_FreeSurface(bmp);
 }
 

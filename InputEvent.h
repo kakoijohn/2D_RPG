@@ -26,6 +26,8 @@ public:
     static int EventFilter(void*, SDL_Event*);
     static void loadState(const char*);
     static void loadInputContext(const char*);
+
+    static std::vector<char*> activeEvents;
 private:
     static rapidjson::Document KeyBindings;
     static std::vector<eventData> checkValues;

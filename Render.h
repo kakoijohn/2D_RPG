@@ -14,6 +14,7 @@
 #include "iostream"
 #include "SDL2/SDL.h"
 #include "Collision.h"
+#include "InputEvent.h"
 
 class Render {
 public:

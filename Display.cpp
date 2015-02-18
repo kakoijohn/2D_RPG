@@ -23,18 +23,17 @@ void Display::createWindow(int width, int height) {
     
     //create window
     SDL_Window *window = SDL_CreateWindow("RPG Game Engine", 4, 4, width, height, SDL_WINDOW_SHOWN);
-    
     if (window == 0)
         SDL_Quit();
-    
-    
+
+    //event handlers
+    SDL_AddEventWatch(InputEvent::EventFilter, nullptr);
+    InputEvent::loadInputContext("KeyBindings.json");
+
+    SDL_Event event;
+
     std::unique_ptr<Render> render = std::unique_ptr<Render>(new Render());
     render->init(window);
-    
-	//event handlers
-    SDL_AddEventWatch(EventLog::EventFilter, nullptr);
-//    SDL_AddEventWatch(MouseInput::MouseEventFilter, nullptr);
-    SDL_Event event;
 	
 	//display loop
     bool done = false;

@@ -13,17 +13,16 @@
 #include "SDL2/SDL.h"
 #include "Structures.h"
 #include "math.h"
+#include "vector"
 
 #endif /* defined(___D_RPG__Polygon__) */
 
 class Polygon {
 public:
-    Point *vert;
+    std::vector<Point> vert;
     
     Polygon(int);
-    void freeResources();
     void rotate(float, Point);
     void move(Point);
     void render(SDL_Renderer*);
-    int vertecies;
 };

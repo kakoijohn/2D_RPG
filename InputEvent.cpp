@@ -8,27 +8,40 @@
 
 #include "InputEvent.h"
 
+rapidjson::Document InputEvent::KeyBindings;
+std::vector<eventData> InputEvent::checkValues;
+
 int InputEvent::EventFilter(void* userData, SDL_Event* event) {
-    switch (event->type) {
-        case SDL_MOUSEMOTION:
-            SDL_Log("Mouse Moved. X=%d, Y=%d, Relative Y=%d", event->motion.x, event->motion.y, event->motion.yrel);
-            return 0;
-        case SDL_MOUSEBUTTONDOWN:
-            SDL_Log("Mouse Button Down %d, %d", event->button.clicks, SDL_MOUSEBUTTONDOWN);
-            return 0;
-        case SDL_MOUSEBUTTONUP:
-            SDL_Log("Mouse Button Up %d", event->button.button);
-            return 0;
-        case SDL_MOUSEWHEEL:
-            SDL_Log("Mouse Wheel");
-            return 0;
-    }
+    if (!checkValues.empty())
+        for (int i = 0; i < checkValues.size(); i++) {
+            if (event->type == checkValues.at(i).key_binding)
+                std::cout << "Event Handled: " << checkValues.at(i).action << "\n";
+        }
 
     return 1;
 }
 
-void InputEvent::loadInputContext(char* fileName) {
-    rapidjson::Document document;
-    document.Parse<0>(fileName);
+void InputEvent::loadInputContext(const char* fileName) {
+    FILE* file = fopen(fileName, "r"); //"r" is for read.
+    rapidjson::FileStream inputStream(file);
+
+    KeyBindings.ParseStream<0>(inputStream);
+
+    fclose(file);
+}
+
+void InputEvent::loadState(const char* state) {
+    const rapidjson::Value& currState = KeyBindings[state];
+
+    checkValues.resize(currState.Size());
+    SDL_Log("%d", currState.Size());
+    for (int i = 0; i < currState.Size(); i++) {
+        const rapidjson::Value& event = currState[i];
+
+        checkValues.at(i).action        = event["action"].GetString();
+        checkValues.at(i).key_binding   = event["key_binding"].GetInt();
+        checkValues.at(i).normalization = event["normalization"].GetInt();
+        checkValues.at(i).modifier      = event["modifier"].GetString();
+    }
 }
 

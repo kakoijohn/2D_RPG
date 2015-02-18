@@ -15,7 +15,6 @@
 
 #include "Render.h"
 #include "EventLog.h"
-#include "InputEvent.h"
 
 #endif /* defined(__RPGGameEngine__Display__) */
 

@@ -17,15 +17,9 @@ Render::Render() {
 
 }
 
-void Render::freeResources() {
-    SDL_DestroyRenderer(SDLRender);
-    SDL_FreeSurface(bmp);
-    
-    triangle1.freeResources();
-    triangle2.freeResources();
-}
-
 int Render::init(SDL_Window *window) {
+    InputEvent::loadState("default");
+
     triangle1.vert[0] = {150, 150};
     triangle1.vert[1] = {250, 250};
     triangle1.vert[2] = {250, 150};
@@ -60,5 +54,10 @@ void Render::updateDisplay() {
     SDL_SetRenderDrawColor(SDLRender, 0, 0, 0, 255);
     
     SDL_RenderPresent(SDLRender);
+}
+
+void Render::freeResources() {
+    SDL_DestroyRenderer(SDLRender);
+    SDL_FreeSurface(bmp);
 }
 

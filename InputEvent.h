@@ -11,14 +11,22 @@
 
 #include <stdio.h>
 #include "iostream"
+#include "vector"
 
 #include "SDL2/SDL.h"
 #include "document.h"
+#include "filestream.h"
+
+#include "EventData.h"
 
 #endif /* defined(___D_RPG__InputEvent__) */
 
 class InputEvent {
 public:
     static int EventFilter(void*, SDL_Event*);
-    static void loadInputContext(char*);
+    static void loadState(const char*);
+    static void loadInputContext(const char*);
+private:
+    static rapidjson::Document KeyBindings;
+    static std::vector<eventData> checkValues;
 };

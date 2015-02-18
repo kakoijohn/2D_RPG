@@ -9,37 +9,32 @@
 #include "Polygon.h"
 
 Polygon::Polygon(int vertecies) {
-    vert = new Point[vertecies];
-    this->vertecies = vertecies;
-}
-
-void Polygon::freeResources() {
-    delete vert;
+    vert.resize(vertecies);
 }
 
 void Polygon::rotate(float rad, Point point) {
-    for (int i = 0; i < vertecies; i++) {
-        float distance = sqrtf(powf((point.x - vert[i].x), 2) + powf((point.y - vert[i].y), 2));
-        float theta = atan2f((vert[i].y - point.y), (vert[i].x - point.x));
+    for (int i = 0; i < vert.size(); i++) {
+        float distance = sqrtf(powf((point.x - vert.at(i).x), 2) + powf((point.y - vert.at(i).y), 2));
+        float theta = atan2f((vert.at(i).y - point.y), (vert.at(i).x - point.x));
 
         theta += rad;
         
-        vert[i].x = point.x + distance * cosf(theta);
-        vert[i].y = point.y + distance * sinf(theta);
+        vert.at(i).x = point.x + distance * cosf(theta);
+        vert.at(i).y = point.y + distance * sinf(theta);
     }
 }
-\
+
 void Polygon::move(Point delta) {
-    for (int i = 0; i < vertecies; i++) {
-        vert[i].x += delta.x;
-        vert[i].y += delta.y;
+    for (int i = 0; i < vert.size(); i++) {
+        vert.at(i).x += delta.x;
+        vert.at(i).y += delta.y;
     }
 }
 
 void Polygon::render(SDL_Renderer *SDLRender) {
-    for (int i = 0; i < vertecies; i++)
-        if (i == vertecies - 1)
-            SDL_RenderDrawLine(SDLRender, vert[i].x, vert[i].y, vert[0].x, vert[0].y);
+    for (int i = 0; i < vert.size(); i++)
+        if (i == vert.size() - 1)
+            SDL_RenderDrawLine(SDLRender, vert.at(i).x, vert.at(i).y, vert[0].x, vert[0].y);
         else
-            SDL_RenderDrawLine(SDLRender, vert[i].x, vert[i].y, vert[i + 1].x, vert[i + 1].y);
+            SDL_RenderDrawLine(SDLRender, vert.at(i).x, vert.at(i).y, vert[i + 1].x, vert[i + 1].y);
 }

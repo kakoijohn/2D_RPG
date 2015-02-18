@@ -22,23 +22,23 @@ bool Collision::isColliding(Polygon shapeA, Polygon shapeB) {
 }
 
 bool Collision::oneCollide(Polygon shapeA, Polygon shapeB) {
-    for (int a = 0; a < shapeA.vertecies; a++) {
+    for (int a = 0; a < shapeA.vert.size(); a++) {
         float Vx;
         float Vy;
         
-        if (a == shapeA.vertecies - 1) {
-            Vx = shapeA.vert[a].x - shapeA.vert[0].x;
-            Vy = shapeA.vert[a].y - shapeA.vert[0].y;
+        if (a == shapeA.vert.size() - 1) {
+            Vx = shapeA.vert.at(a).x - shapeA.vert.at(0).x;
+            Vy = shapeA.vert.at(a).y - shapeA.vert.at(0).y;
         } else {
-            Vx = shapeA.vert[a].x - shapeA.vert[a + 1].x;
-            Vy = shapeA.vert[a].y - shapeA.vert[a + 1].y;
+            Vx = shapeA.vert.at(a).x - shapeA.vert.at(a + 1).x;
+            Vy = shapeA.vert.at(a).y - shapeA.vert.at(a + 1).y;
         }
 
         float TAmin = std::numeric_limits<float>::max();
         float TAmax = std::numeric_limits<float>::min();
         
-        for (int i = 0; i < shapeA.vertecies; i++) {
-            float TAv = (shapeA.vert[i].x * Vx + shapeA.vert[i].y * Vy) / (powf(Vx, 2) + powf(Vy, 2));
+        for (int i = 0; i < shapeA.vert.size(); i++) {
+            float TAv = (shapeA.vert.at(i).x * Vx + shapeA.vert.at(i).y * Vy) / (powf(Vx, 2) + powf(Vy, 2));
             float TAvx = TAv * Vx;
             float TAvy = TAv * Vy;
             
@@ -51,8 +51,8 @@ bool Collision::oneCollide(Polygon shapeA, Polygon shapeB) {
         float TBmin = std::numeric_limits<float>::max();
         float TBmax = std::numeric_limits<float>::min();
         
-        for (int i = 0; i < shapeB.vertecies; i++) {
-            float TBv = (shapeB.vert[i].x * Vx + shapeB.vert[i].y * Vy) / (powf(Vx, 2) + powf(Vy, 2));
+        for (int i = 0; i < shapeB.vert.size(); i++) {
+            float TBv = (shapeB.vert.at(i).x * Vx + shapeB.vert.at(i).y * Vy) / (powf(Vx, 2) + powf(Vy, 2));
             float TBvx = TBv * Vx;
             float TBvy = TBv * Vy;
             

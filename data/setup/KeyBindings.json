@@ -1,15 +1,24 @@
 {
-    "game_states": [
-    {
-        "id": "default",
-        "key_bindings": [
-                    {
-                         "action": "polygon_move",
-                         "key_binding": 1025;
-                         "normalization": 1;
-                         "modifier": "left_mouse_down";
-                    }
-        ]
-    }
-    ]
+    "default": [
+                {
+                "action": "polygon_move",
+                "key_binding": 1025,
+                "normalization": 1,
+                "modifier": "left_mouse_down"
+                }
+                ],
+    "pause_menu": [
+                   {
+                   "action": "single_click",
+                   "key_binding": 10,
+                   "normalization": 1,
+                   "modifier": "left_mouse_single_click"
+                   },
+                   {
+                   "action": "quit",
+                   "key_binding": 0,
+                   "normalization": 1,
+                   "modifier": "key_down"
+                   }
+                   ]
 }

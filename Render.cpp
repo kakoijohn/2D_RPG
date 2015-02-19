@@ -41,12 +41,12 @@ void Render::updateDisplay() {
         SDL_SetRenderDrawColor(SDLRender, 255, 0, 0, 255);
     else
         SDL_SetRenderDrawColor(SDLRender, 0, 255, 0, 255);
-    
+
+    triangle1.pollEvents();
+
     triangle1.render(SDLRender);
-    triangle1.rotate(.01, {160, 200});
     
     triangle2.render(SDLRender);
-    triangle2.rotate(-.01, {250, 250});
     
     SDL_SetRenderDrawColor(SDLRender, 0, 0, 0, 255);
     

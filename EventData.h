@@ -16,6 +16,14 @@
 struct eventData {
     const char* action;
     int key_binding;
-    int normalization;
-    const char* modifier;
+    float normalization;
+    int modifier;
+
+    int clicks;
+    float x;
+    float y;
+    float xrel;
+    float yrel;
+    float xwheel;
+    float ywheel;
 };

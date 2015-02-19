@@ -9,13 +9,11 @@
 #ifndef __RPGGameEngine__Render__
 #define __RPGGameEngine__Render__
 
-#endif /* defined(__RPGGameEngine__Render__) */
-
 #include "iostream"
 #include "SDL2/SDL.h"
 #include "Collision.h"
-#include "InputEvent.h"
 
+#endif /* defined(__RPGGameEngine__Render__) */
 class Render {
 public:
 	Render();

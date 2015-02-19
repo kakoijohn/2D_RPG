@@ -27,6 +27,7 @@ void Display::createWindow(int width, int height) {
         SDL_Quit();
 
     //event handlers
+//    SDL_AddEventWatch(EventLog::EventFilter, nullptr);
     SDL_AddEventWatch(InputEvent::EventFilter, nullptr);
     InputEvent::loadInputContext("KeyBindings.json");
 
@@ -34,6 +35,9 @@ void Display::createWindow(int width, int height) {
 
     std::unique_ptr<Render> render = std::unique_ptr<Render>(new Render());
     render->init(window);
+
+    //FPS
+    
 	
 	//display loop
     bool done = false;

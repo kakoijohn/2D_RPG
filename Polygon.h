@@ -11,7 +11,10 @@
 
 #include <stdio.h>
 #include "SDL2/SDL.h"
+
 #include "Structures.h"
+#include "InputEvent.h"
+
 #include "math.h"
 #include "vector"
 
@@ -19,10 +22,15 @@
 
 class Polygon {
 public:
-    std::vector<Point> vert;
-    
     Polygon(int);
+
     void rotate(float, Point);
     void move(Point);
+    void set(Point);
     void render(SDL_Renderer*);
+    void pollEvents();
+
+    std::vector<Point> vert;
+    Point oPolyPos;
+    Point oMousePos;
 };

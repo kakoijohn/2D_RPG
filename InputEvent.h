@@ -9,6 +9,9 @@
 #ifndef ___D_RPG__InputEvent__
 #define ___D_RPG__InputEvent__
 
+#ifndef Included_NameModel_H
+#define Included_NameModel_H
+
 #include <stdio.h>
 #include "iostream"
 #include "vector"
@@ -19,6 +22,7 @@
 
 #include "EventData.h"
 
+#endif
 #endif /* defined(___D_RPG__InputEvent__) */
 
 class InputEvent {
@@ -27,8 +31,11 @@ public:
     static void loadState(const char*);
     static void loadInputContext(const char*);
 
-    static std::vector<char*> activeEvents;
+    static std::vector<eventData> activeEvents;
 private:
+    static int checkEvent(eventData&, SDL_Event*);
+    static void addActiveEvent(eventData&, SDL_Event*);
+
     static rapidjson::Document KeyBindings;
     static std::vector<eventData> checkValues;
 };

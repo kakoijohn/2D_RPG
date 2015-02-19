@@ -1,10 +1,16 @@
 {
     "default": [
                 {
-                "action": "polygon_move",
+                "action": "polygon_drag_start",
                 "key_binding": 1025,
                 "normalization": 1,
-                "modifier": "left_mouse_down"
+                "modifier": 1
+                },
+                {
+                "action": "polygon_move",
+                "key_binding": 1024,
+                "normalization": 1,
+                "modifier": 1
                 }
                 ],
     "pause_menu": [
@@ -12,13 +18,13 @@
                    "action": "single_click",
                    "key_binding": 1025,
                    "normalization": 1,
-                   "modifier": "left_mouse_single_click"
+                   "modifier": 1
                    },
                    {
-                   "action": "key_q",
-                   "key_binding": 113,
+                   "action": "up",
+                   "key_binding": 771,
                    "normalization": 1,
-                   "modifier": "key_down"
+                   "modifier": 119
                    }
                    ]
 }

@@ -8,10 +8,11 @@
 
 #include "Display.h"
 
+bool Display::remainingEvents;
+
 Display::Display(int width, int height) {
     createWindow(width, height);
 }
-
 
 //create window
 void Display::createWindow(int width, int height) {
@@ -28,11 +29,10 @@ void Display::createWindow(int width, int height) {
 
     //event handlers
 //    SDL_AddEventWatch(EventLog::EventFilter, nullptr);
-    SDL_AddEventWatch(InputEvent::EventFilter, nullptr);
     InputEvent::loadInputContext("KeyBindings.json");
-
     SDL_Event event;
 
+    //Renderer
     std::unique_ptr<Render> render = std::unique_ptr<Render>(new Render());
     render->init(window);
 
@@ -42,8 +42,10 @@ void Display::createWindow(int width, int height) {
 	//display loop
     bool done = false;
     while (!done) {
+        InputEvent::clearActive();
         SDL_PumpEvents();
         while (SDL_PollEvent(&event)) {
+            InputEvent::EventFilter(&event);
             if (event.type == SDL_QUIT) {
                 done = true;
                 break;

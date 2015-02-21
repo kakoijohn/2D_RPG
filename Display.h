@@ -22,6 +22,7 @@ class Display {
 public:
     Display(int, int);
     void destroyWindow();
+    static bool remainingEvents;
 private:
     void createWindow(int, int);
 };

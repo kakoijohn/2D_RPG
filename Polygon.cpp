@@ -42,13 +42,15 @@ void Polygon::set(Point location) {
 }
 
 void Polygon::pollEvents() {
-    std::vector<eventData> &events = InputEvent::activeEvents;
+    std::vector<eventData> &events = InputEvent::events;
     for (int i  = 0; i < events.size(); i++) {
-        if (strcmp(events.at(i).action, "polygon_drag_start") == 0) {
-            oMousePos = {events.at(i).x, events.at(i).y};
-            oPolyPos = vert.at(0);
-        } if (strcmp(events.at(i).action, "polygon_move") == 0)
-            set({(events.at(i).x - oMousePos.x) + oPolyPos.x, (events.at(i).y - oMousePos.y) + oPolyPos.y});
+        if (events.at(i).active == true) {
+            if (strcmp(events.at(i).action, "polygon_drag_start") == 0) {
+                oMousePos = {events.at(i).x, events.at(i).y};
+                oPolyPos = vert.at(0);
+            } else if (strcmp(events.at(i).action, "polygon_move") == 0)
+                set({(events.at(i).x - oMousePos.x) + oPolyPos.x, (events.at(i).y - oMousePos.y) + oPolyPos.y});
+        }
     }
 }
 

@@ -19,6 +19,8 @@ struct eventData {
     float normalization;
     int modifier;
 
+    bool active;
+
     int clicks;
     float x;
     float y;

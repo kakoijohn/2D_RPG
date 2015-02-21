@@ -27,15 +27,15 @@
 
 class InputEvent {
 public:
-    static int EventFilter(void*, SDL_Event*);
+    static void EventFilter(SDL_Event*);
     static void loadState(const char*);
     static void loadInputContext(const char*);
+    static void clearActive();
 
-    static std::vector<eventData> activeEvents;
+    static std::vector<eventData> events;
 private:
-    static int checkEvent(eventData&, SDL_Event*);
+    static void checkEvent(eventData&, SDL_Event*);
     static void addActiveEvent(eventData&, SDL_Event*);
 
     static rapidjson::Document KeyBindings;
-    static std::vector<eventData> checkValues;
 };

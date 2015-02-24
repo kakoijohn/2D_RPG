@@ -27,7 +27,7 @@ int Render::init(SDL_Window *window) {
     triangle2.vert[1] = {150, 250};
     triangle2.vert[2] = {250, 250};
 
-    triangle2.move({50, 50});
+    triangle2.move({100, 100});
     
     SDLRender = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     

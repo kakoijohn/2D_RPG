@@ -38,8 +38,8 @@ bool Collision::isColliding(Point point, Polygon shape) {
             Vx = -(shape.vert.at(a).y - shape.vert.at(0).y);
             Vy = shape.vert.at(a).x - shape.vert.at(0).x;
         } else {
-            Vx = -(shape.vert.at(a + 1).x - shape.vert.at(a).x);
-            Vy = shape.vert.at(a + 1).y - shape.vert.at(a).y;
+            Vx = -(shape.vert.at(a + 1).y - shape.vert.at(a).y);
+            Vy = shape.vert.at(a + 1).x - shape.vert.at(a).x;
         }
 
         float TAmin = std::numeric_limits<float>::max();
@@ -78,8 +78,8 @@ bool Collision::oneCollide(Polygon shapeA, Polygon shapeB, SDL_Renderer* render)
             Vx = -(shapeA.vert.at(a).y - shapeA.vert.at(0).y);
             Vy = shapeA.vert.at(a).x - shapeA.vert.at(0).x;
         } else {
-            Vx = -(shapeA.vert.at(a + 1).x - shapeA.vert.at(a).x);
-            Vy = shapeA.vert.at(a + 1).y - shapeA.vert.at(a).y;
+            Vx = -(shapeA.vert.at(a + 1).y - shapeA.vert.at(a).y);
+            Vy = shapeA.vert.at(a + 1).x - shapeA.vert.at(a).x;
         }
 
         float TAmin = std::numeric_limits<float>::max();

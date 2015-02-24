@@ -12,11 +12,11 @@ Collision::Collision() {
     
 }
 
-bool Collision::isColliding(Polygon shapeA, Polygon shapeB, SDL_Renderer* render) {
+bool Collision::isColliding(Polygon shapeA, Polygon shapeB) {
     if (shapeA.vert.size() > 1 && shapeB.vert.size() > 1) {
-        if (!oneCollide(shapeA, shapeB, render))
+        if (!oneCollide(shapeA, shapeB))
             return false;
-        if (!oneCollide(shapeB, shapeA, render))
+        if (!oneCollide(shapeB, shapeA))
             return false;
     } else if (shapeA.vert.size() > 1 && shapeB.vert.size() <= 1) {
         if (!isColliding(shapeB.vert.at(0), shapeA))
@@ -69,7 +69,7 @@ bool Collision::isColliding(Point point, Polygon shape) {
     return true;
 }
 
-bool Collision::oneCollide(Polygon shapeA, Polygon shapeB, SDL_Renderer* render) {
+bool Collision::oneCollide(Polygon shapeA, Polygon shapeB) {
     for (int a = 0; a < shapeA.vert.size(); a++) {
         float Vx;
         float Vy;
@@ -92,9 +92,6 @@ bool Collision::oneCollide(Polygon shapeA, Polygon shapeB, SDL_Renderer* render)
             
             float TAval = TAvx * Vx + TAvy * Vy;
 
-            SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
-            SDL_RenderDrawPoint(render, TAvx, TAvy);
-
             TAmin = fminf(TAmin, TAval);
             TAmax = fmaxf(TAmax, TAval);
         }
@@ -108,9 +105,6 @@ bool Collision::oneCollide(Polygon shapeA, Polygon shapeB, SDL_Renderer* render)
             float TBvy = TBv * Vy;
             
             float TBval = TBvx * Vx + TBvy * Vy;
-
-            SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
-            SDL_RenderDrawPoint(render, TBvx, TBvy);
 
             TBmin = fminf(TBmin, TBval);
             TBmax = fmaxf(TBmax, TBval);

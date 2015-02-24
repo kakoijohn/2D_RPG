@@ -9,12 +9,10 @@
 #include <iostream>
 #include <stdlib.h>
 
-#include "SDL2/SDL.h"
-
-#include "Display.h"
+#include "main.h"
 
 int main(int argc, char** argv){
-    Display d(1000, 1000);
+    Display d(500, 500);
     
     return 0;
 }

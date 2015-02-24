@@ -10,9 +10,11 @@
 #define ___D_RPG__Collision__
 
 #include <stdio.h>
-#include "Polygon.h"
+
 #include "limits"
 #include "math.h"
+
+#include "Polygon.h"
 
 #endif /* defined(___D_RPG__Collision__) */
 

@@ -9,8 +9,9 @@
 #ifndef __RPGGameEngine__Display__
 #define __RPGGameEngine__Display__
 
+#include <stdio.h>
+
 #include "iostream"
-#include "SDL2/SDL.h"
 #include "memory"
 
 #include "Render.h"

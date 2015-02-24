@@ -9,8 +9,10 @@
 #ifndef __RPGGameEngine__Render__
 #define __RPGGameEngine__Render__
 
+#include <stdio.h>
+
 #include "iostream"
-#include "SDL2/SDL.h"
+
 #include "Collision.h"
 
 #endif /* defined(__RPGGameEngine__Render__) */

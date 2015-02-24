@@ -12,12 +12,12 @@
 #include <stdio.h>
 #include "SDL2/SDL.h"
 
+#include "math.h"
+#include "vector"
+
 #include "Structures.h"
 #include "InputEvent.h"
 #include "Identifiers.h"
-
-#include "math.h"
-#include "vector"
 
 #endif /* defined(___D_RPG__Polygon__) */
 

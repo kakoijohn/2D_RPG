@@ -20,6 +20,7 @@ class Collision {
 public:
     Collision();
     static bool isColliding(Polygon, Polygon);
+    static bool isColliding(Point, Polygon);
 private:
     static bool oneCollide(Polygon, Polygon);
 };

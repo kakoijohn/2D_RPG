@@ -87,6 +87,7 @@ void InputEvent::loadState(const char* state) {
         eventData& data = events.at(i);
 
         data.action        = event["action"].GetString();
+        data.identifier    = event["identifier"].GetInt();
         data.key_binding   = event["key_binding"].GetInt();
         data.normalization = event["normalization"].GetDouble();
         data.modifier      = event["modifier"].GetInt();

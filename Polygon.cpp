@@ -41,15 +41,38 @@ void Polygon::set(Point location) {
     vert.at(0) = location;
 }
 
+Point Polygon::centroid() {
+    float Area;
+    float Cx;
+    float Cy;
+
+    for (int i = 0; i < vert.size() - 1; i++) {
+        float a = vert.at(i).x * vert.at(i + 1).y - vert.at(i + 1).x * vert.at(i).y;
+        Area += a;
+        Cx += (vert.at(i).x + vert.at(i + 1).x) * a;
+        Cy += (vert.at(i).y + vert.at(i + 1).y) * a;
+    }
+    
+    Area = (1 / 2) * Area;
+    Cx = (1 / (6 * Area)) * Cx;
+    Cy = (1 / (6 * Area)) * Cy;
+
+    return {Cx, Cy};
+}
+
 void Polygon::pollEvents() {
     std::vector<eventData> &events = InputEvent::events;
     for (int i  = 0; i < events.size(); i++) {
         if (events.at(i).active == true) {
-            if (strcmp(events.at(i).action, "polygon_drag_start") == 0) {
+            if (events.at(i).identifier == polygon_drag_start) {
                 oMousePos = {events.at(i).x, events.at(i).y};
                 oPolyPos = vert.at(0);
-            } else if (strcmp(events.at(i).action, "polygon_move") == 0)
+            } else if (events.at(i).identifier == polygon_move)
                 set({(events.at(i).x - oMousePos.x) + oPolyPos.x, (events.at(i).y - oMousePos.y) + oPolyPos.y});
+            else if (events.at(i).identifier == polygon_rotate_right)
+                rotate(.1, {100, 100});
+            else if (events.at(i).identifier == polygon_rotate_left)
+                rotate(-.1, {100, 100});
         }
     }
 }

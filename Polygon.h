@@ -14,6 +14,7 @@
 
 #include "Structures.h"
 #include "InputEvent.h"
+#include "Identifiers.h"
 
 #include "math.h"
 #include "vector"
@@ -27,6 +28,7 @@ public:
     void rotate(float, Point);
     void move(Point);
     void set(Point);
+    Point centroid();
     void render(SDL_Renderer*);
     void pollEvents();
 

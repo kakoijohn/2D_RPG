@@ -16,14 +16,18 @@
 
 #include "Render.h"
 #include "EventLog.h"
+#include "Clock.h"
 
 #endif /* defined(__RPGGameEngine__Display__) */
 
 class Display {
 public:
     Display(int, int);
+    int setFPS(int);
     void destroyWindow();
     static bool remainingEvents;
 private:
     void createWindow(int, int);
+    int FPS;
+    int ticksPerFrame;
 };

@@ -11,6 +11,8 @@
 bool Display::remainingEvents;
 
 Display::Display(int width, int height) {
+    FPS = 60;
+    ticksPerFrame = 1000 / FPS;
     createWindow(width, height);
 }
 
@@ -37,11 +39,22 @@ void Display::createWindow(int width, int height) {
     render->init(window);
 
     //FPS
-    
-	
+    int countedFrames = 0;
+    Uint32 fpsTimer = SDL_GetTicks();
+    Uint32 capTimer;
+    float avgFPS;
+    int frameTicks;
+    int printTicks = 0;
+
+    //Global Clock
+    Clock::start();
+
 	//display loop
     bool done = false;
     while (!done) {
+        Clock::tick();
+        capTimer = SDL_GetTicks();
+
         InputEvent::clearActive();
         SDL_PumpEvents();
         while (SDL_PollEvent(&event)) {
@@ -51,8 +64,24 @@ void Display::createWindow(int width, int height) {
                 break;
             }
         }
-        
+
+        //FPS stuff
+        avgFPS = countedFrames / ((SDL_GetTicks() - fpsTimer) / 1000.f);
+        if (avgFPS > 2000000)
+            avgFPS = 0;
+        if (printTicks++ >= 60) {
+            std::cout << "FPS: " << avgFPS << "\n";
+            printTicks = 0;
+        }
+
+        //Update Display
         render->updateDisplay();
+
+        //More FPS stuff
+        countedFrames++;
+        frameTicks = SDL_GetTicks() - capTimer;
+        if (frameTicks < ticksPerFrame)
+            SDL_Delay(ticksPerFrame - frameTicks);
     }
     
 	render->freeResources();
@@ -62,3 +91,12 @@ void Display::createWindow(int width, int height) {
     SDL_Quit();
 }
 
+int Display::setFPS(int FPS) {
+    if (FPS <= 0)
+        return -1;
+
+    this->FPS = FPS;
+    ticksPerFrame = 1000 / FPS;
+
+    return 0;
+}

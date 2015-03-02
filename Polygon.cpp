@@ -42,20 +42,16 @@ void Polygon::set(Point location) {
 }
 
 Point Polygon::centroid() {
-    float Area;
     float Cx;
     float Cy;
 
-    for (int i = 0; i < vert.size() - 1; i++) {
-        float a = vert.at(i).x * vert.at(i + 1).y - vert.at(i + 1).x * vert.at(i).y;
-        Area += a;
-        Cx += (vert.at(i).x + vert.at(i + 1).x) * a;
-        Cy += (vert.at(i).y + vert.at(i + 1).y) * a;
+    for (int i = 0; i < vert.size(); i++) {
+        Cx += vert.at(i).x;
+        Cy += vert.at(i).y;
     }
-    
-    Area = (1 / 2) * Area;
-    Cx = (1 / (6 * Area)) * Cx;
-    Cy = (1 / (6 * Area)) * Cy;
+
+    Cx = Cx / vert.size();
+    Cy = Cy / vert.size();
 
     return {Cx, Cy};
 }
@@ -70,9 +66,9 @@ void Polygon::pollEvents() {
             } else if (events.at(i).identifier == polygon_move)
                 set({(events.at(i).x - oMousePos.x) + oPolyPos.x, (events.at(i).y - oMousePos.y) + oPolyPos.y});
             else if (events.at(i).identifier == polygon_rotate_right)
-                rotate(.1, {100, 100});
+                rotate(.1, centroid());
             else if (events.at(i).identifier == polygon_rotate_left)
-                rotate(-.1, {100, 100});
+                rotate(-.1, centroid());
         }
     }
 }

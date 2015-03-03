@@ -14,16 +14,16 @@
 #include "limits"
 #include "math.h"
 
-#include "Polygon.h"
+#include "Body.h"
+//#include "Impulse.h"
 
 #endif /* defined(___D_RPG__Collision__) */
 
 class Collision {
 public:
-    Collision();
-    static bool isColliding(Polygon&, Polygon&);
-    static bool isColliding(Point&, Polygon&);
-    static bool isCollidingMouse(Polygon&);
+    static bool isColliding(Body&, Body&);
+    static bool isColliding(Point&, Body&);
+    static bool isCollidingMouse(Body&);
 private:
-    static bool oneCollide(Polygon&, Polygon&);
+    static bool oneCollide(Body&, Body&);
 };

@@ -15,6 +15,20 @@
 
 class Body {
 public:
+    Body(int);
+
     Polygon s;
-    Properties p;
+
+    Vect vel;
+    Vect angVel;
+    Vect accel;
+    Material material;
+    float dragCoef;
+    float moment;
+    float mass;
+    float area;
 };
+
+Body::Body(int vertecies) : s(vertecies) {
+
+}

@@ -11,11 +11,14 @@
 
 #include <stdio.h>
 
+#include "SDL2/SDL.h"
+
 #include "iostream"
 
 #include "Collision.h"
 
 #endif /* defined(__RPGGameEngine__Render__) */
+
 class Render {
 public:
 	Render();

@@ -41,6 +41,14 @@ void Polygon::set(Point location) {
     vert.at(0) = location;
 }
 
+void Polygon::resize(float percent) {
+    for (int i = 0; i < vert.size(); i++) {
+        vert.at(i).x *= percent;
+        vert.at(i).y *= percent;
+    }
+}
+
+
 Point Polygon::centroid() {
     float Cx;
     float Cy;

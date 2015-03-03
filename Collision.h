@@ -14,7 +14,7 @@
 #include "limits"
 #include "math.h"
 
-#include "Polygon.h"
+#include "Impulse.h"
 
 #endif /* defined(___D_RPG__Collision__) */
 

@@ -28,19 +28,3 @@ struct Vect {
     float x;
     float y;
 };
-
-struct Material {
-    float density;
-    float restitution;
-};
-
-struct Properties {
-    Vect vel;
-    Vect angVel;
-    Vect force;
-    Material mat;
-    float mass;
-    float statFrict;
-    float dynFrict;
-    float restitution; //elasticity
-};

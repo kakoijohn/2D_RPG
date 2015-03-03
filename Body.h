@@ -15,6 +15,22 @@
 
 class Body {
 public:
-    Polygon s;
-    Properties p;
+    Body(int);
+
+    Polygon p;
+
+    Vect vel;
+    Vect angVel;
+    Vect force;
+    Vect accel;
+
+    float area;
+    float mass;
+    float density;
+
+    float moment;
+    float restitution;
+    float dragCoef;
+    float statFrict;
+    float dynFrict;
 };

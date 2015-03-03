@@ -16,7 +16,6 @@
 
 #include "Render.h"
 #include "EventLog.h"
-#include "Clock.h"
 
 #endif /* defined(__RPGGameEngine__Display__) */
 

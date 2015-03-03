@@ -11,12 +11,18 @@
 
 #include <stdio.h>
 
-#endif /* defined(___D_RPG__Impulse__) */
-
 #include "Body.h"
+#include "Clock.h"
+
+#endif /* defined(___D_RPG__Impulse__) */
 
 class Impulse {
 public:
-    static float dotProduct(Vect&, Vect&);
-    static void resolveCollision(Body&, Body&);
+    static void initializeObject(Body&);
+    static void applyPhysics(Body&, bool);
+private:
+    static void setArea(Body&);
+    static void setMoment(Body&);
+    static void setMass(Body&);
+
 };

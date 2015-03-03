@@ -15,9 +15,9 @@
 #include "math.h"
 #include "vector"
 
-#include "Structures.h"
 #include "InputEvent.h"
 #include "Identifiers.h"
+#include "PhysicsConstants.h"
 
 #endif /* defined(___D_RPG__Polygon__) */
 
@@ -28,6 +28,7 @@ public:
     void rotate(float, Point);
     void move(Point);
     void set(Point);
+    void resize(float);
     Point centroid();
     void render(SDL_Renderer*);
     void pollEvents();

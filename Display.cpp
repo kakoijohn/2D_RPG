@@ -11,7 +11,7 @@
 bool Display::remainingEvents;
 
 Display::Display(int width, int height) {
-    FPS = 45;
+    FPS = 120;
     limitFrames = true;
     ticksPerFrame = 1000 / FPS;
     createWindow(width, height);
@@ -74,7 +74,7 @@ void Display::createWindow(int width, int height) {
             std::cout << "FPS: " << avgFPS << "\n";
             printTicks = 0;
         }
-
+        
         //Update Display
         render->updateDisplay();
 

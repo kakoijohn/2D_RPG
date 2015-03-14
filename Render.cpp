@@ -59,8 +59,6 @@ void Render::updateDisplay() {
 
     triangle.p.render(SDLRender);
     base.p.render(SDLRender);
-
-    SDL_SetRenderDrawColor(SDLRender, 0, 255, 255, 255);
     
     SDL_SetRenderDrawColor(SDLRender, 0, 0, 0, 255);
     

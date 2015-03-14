@@ -16,6 +16,7 @@
 class Body {
 public:
     Body(int);
+    void initializeObject();
 
     Polygon p;
 
@@ -24,13 +25,25 @@ public:
     Vect force;
     Vect accel;
 
+    int collisionLoc;
+
     float area;
     float mass;
     float density;
+
+    float theta;
+    float omega;
+    float alpha;
+    float angularB;
 
     float moment;
     float restitution;
     float dragCoef;
     float statFrict;
     float dynFrict;
+    
+private:
+    void setArea();
+    void setMoment();
+    void setMass();
 };

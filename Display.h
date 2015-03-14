@@ -28,5 +28,6 @@ public:
 private:
     void createWindow(int, int);
     int FPS;
+    bool limitFrames;
     int ticksPerFrame;
 };

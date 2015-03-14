@@ -21,9 +21,10 @@
 class Collision {
 public:
     Collision();
-    static bool isColliding(Polygon&, Polygon&);
-    static bool isColliding(Point&, Polygon&);
-    static bool isCollidingMouse(Polygon&);
+    static bool isColliding(Body&, Body&);
+    static bool isColliding(Vect&, Body&);
+    static bool isCollidingMouse(Body&);
 private:
-    static bool oneCollide(Polygon&, Polygon&);
+    static Vect getSupport(Body&, Vect);
+    static float findAxisLeastPenetration(Body&, Body&);
 };

@@ -12,7 +12,9 @@ Polygon::Polygon(int vertecies) {
     vert.resize(vertecies);
 }
 
-void Polygon::rotate(float rad, Point point) {
+//make this more efficient later
+//http://buildnewgames.com/gamephysics/
+void Polygon::rotate(float rad, Vect point) {
     for (int i = 0; i < vert.size(); i++) {
         float distance = sqrtf(powf((point.x - vert.at(i).x), 2) + powf((point.y - vert.at(i).y), 2));
         float theta = atan2f((vert.at(i).y - point.y), (vert.at(i).x - point.x));
@@ -24,15 +26,15 @@ void Polygon::rotate(float rad, Point point) {
     }
 }
 
-void Polygon::move(Point delta) {
+void Polygon::move(Vect delta) {
     for (int i = 0; i < vert.size(); i++) {
         vert.at(i).x += delta.x;
         vert.at(i).y += delta.y;
     }
 }
 
-void Polygon::set(Point location) {
-    Point original = vert.at(0);
+void Polygon::set(Vect location) {
+    Vect original = vert.at(0);
     if (vert.size() > 1)
         for (int i = 1; i < vert.size(); i++) {
             vert.at(i).x = (vert.at(i).x - original.x) + location.x;
@@ -48,8 +50,7 @@ void Polygon::resize(float percent) {
     }
 }
 
-
-Point Polygon::centroid() {
+Vect Polygon::centroid() {
     float Cx;
     float Cy;
 
@@ -62,6 +63,20 @@ Point Polygon::centroid() {
     Cy = Cy / vert.size();
 
     return {Cx, Cy};
+}
+
+Vect Polygon::normalFace(int i) {
+    Vect n;
+
+    if (i == vert.size() - 1) {
+        n.x =  (vert.at(i).y - vert.at(0).y);
+        n.y = -(vert.at(i).x - vert.at(0).x);
+    } else {
+        n.x =  (vert.at(i + 1).y - vert.at(i).y);
+        n.y = -(vert.at(i + 1).x - vert.at(i).x);
+    }
+
+    return n;
 }
 
 void Polygon::pollEvents() {

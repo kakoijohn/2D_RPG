@@ -9,44 +9,44 @@
 #include "Collision.h"
 
 Collision::Collision() {
-    
+
 }
 
-bool Collision::isColliding(Polygon& shapeA, Polygon& shapeB) {
-    if (shapeA.vert.size() > 1 && shapeB.vert.size() > 1) {
-        if (!oneCollide(shapeA, shapeB))
+bool Collision::isColliding(Body& shapeA, Body& shapeB) {
+    if (shapeA.p.vert.size() > 1 && shapeB.p.vert.size() > 1) {
+        if (findAxisLeastPenetration(shapeA, shapeB) >= 0)
             return false;
-        if (!oneCollide(shapeB, shapeA))
+        if (findAxisLeastPenetration(shapeB, shapeA) >= 0)
             return false;
-    } else if (shapeA.vert.size() > 1 && shapeB.vert.size() <= 1) {
-        if (!isColliding(shapeB.vert.at(0), shapeA))
+    } else if (shapeA.p.vert.size() > 1 && shapeB.p.vert.size() <= 1) {
+        if (!isColliding(shapeB.p.vert.at(0), shapeA))
             return false;
-    } else if (shapeB.vert.size() > 1 && shapeA.vert.size() <= 1) {
-        if (!isColliding(shapeA.vert.at(0), shapeB))
+    } else if (shapeB.p.vert.size() > 1 && shapeA.p.vert.size() <= 1) {
+        if (!isColliding(shapeA.p.vert.at(0), shapeB))
             return false;
     }
 
     return true;
 }
 
-bool Collision::isColliding(Point& point, Polygon& shape) {
-    for (int a = 0; a < shape.vert.size(); a++) {
+bool Collision::isColliding(Vect& point, Body& shape) {
+    for (int a = 0; a < shape.p.vert.size(); a++) {
         float Vx;
         float Vy;
 
-        if (a == shape.vert.size() - 1) {
-            Vx = -(shape.vert.at(a).y - shape.vert.at(0).y);
-            Vy = shape.vert.at(a).x - shape.vert.at(0).x;
+        if (a == shape.p.vert.size() - 1) {
+            Vx = -(shape.p.vert.at(a).y - shape.p.vert.at(0).y);
+            Vy = shape.p.vert.at(a).x - shape.p.vert.at(0).x;
         } else {
-            Vx = -(shape.vert.at(a + 1).y - shape.vert.at(a).y);
-            Vy = shape.vert.at(a + 1).x - shape.vert.at(a).x;
+            Vx = -(shape.p.vert.at(a + 1).y - shape.p.vert.at(a).y);
+            Vy = shape.p.vert.at(a + 1).x - shape.p.vert.at(a).x;
         }
 
         float TAmin = std::numeric_limits<float>::max();
         float TAmax = -TAmin;
 
-        for (int i = 0; i < shape.vert.size(); i++) {
-            float TAv = (shape.vert.at(i).x * Vx + shape.vert.at(i).y * Vy) / (Vx * Vx + Vy * Vy);
+        for (int i = 0; i < shape.p.vert.size(); i++) {
+            float TAv = (shape.p.vert.at(i).x * Vx + shape.p.vert.at(i).y * Vy) / (Vx * Vx + Vy * Vy);
             float TAvx = TAv * Vx;
             float TAvy = TAv * Vy;
 
@@ -69,59 +69,50 @@ bool Collision::isColliding(Point& point, Polygon& shape) {
     return true;
 }
 
-bool Collision::oneCollide(Polygon& shapeA, Polygon& shapeB) {
-    for (int a = 0; a < shapeA.vert.size(); a++) {
-        float Vx;
-        float Vy;
-        
-        if (a == shapeA.vert.size() - 1) {
-            Vx = -(shapeA.vert.at(a).y - shapeA.vert.at(0).y);
-            Vy = shapeA.vert.at(a).x - shapeA.vert.at(0).x;
-        } else {
-            Vx = -(shapeA.vert.at(a + 1).y - shapeA.vert.at(a).y);
-            Vy = shapeA.vert.at(a + 1).x - shapeA.vert.at(a).x;
-        }
-
-        float TAmin = std::numeric_limits<float>::max();
-        float TAmax = -TAmin;
-        
-        for (int i = 0; i < shapeA.vert.size(); i++) {
-            float TAv = (shapeA.vert.at(i).x * Vx + shapeA.vert.at(i).y * Vy) / (Vx * Vx + Vy * Vy);
-            float TAvx = TAv * Vx;
-            float TAvy = TAv * Vy;
-            
-            float TAval = TAvx * Vx + TAvy * Vy;
-
-            TAmin = fminf(TAmin, TAval);
-            TAmax = fmaxf(TAmax, TAval);
-        }
-        
-        float TBmin = std::numeric_limits<float>::max();
-        float TBmax = -TBmin;
-        
-        for (int i = 0; i < shapeB.vert.size(); i++) {
-            float TBv = (shapeB.vert.at(i).x * Vx + shapeB.vert.at(i).y * Vy) / (Vx * Vx + Vy * Vy);
-            float TBvx = TBv * Vx;
-            float TBvy = TBv * Vy;
-            
-            float TBval = TBvx * Vx + TBvy * Vy;
-
-            TBmin = fminf(TBmin, TBval);
-            TBmax = fmaxf(TBmax, TBval);
-        }
-
-        if (!(TBmin <= TAmax && TBmax >= TAmin))
-            return false;
-    }
-    
-    return true;
-}
-
-bool Collision::isCollidingMouse(Polygon& shape) {
+bool Collision::isCollidingMouse(Body& shape) {
     int mX, mY;
     SDL_GetMouseState(&mX, &mY);
-    Point p = {(float)mX, (float)mY};
+    Vect p = {(float)mX, (float)mY};
 
     return isColliding(p, shape);
+}
+
+Vect Collision::getSupport(Body& shape, Vect direction) {
+    float bestProjection = -std::numeric_limits<float>::max();
+    Vect bestVertex;
+
+    for (int i = 0; i < shape.p.vert.size(); i++) {
+        Vect v = shape.p.vert[i];
+        float projection = v.x * direction.x + v.y * direction.y;
+
+        if (projection > bestProjection) {
+            bestVertex = v;
+            bestProjection = projection;
+        }
+    }
+
+    return bestVertex;
+}
+
+float Collision::findAxisLeastPenetration(Body& shapeA, Body& shapeB) {
+    float bestDistance = -std::numeric_limits<float>::max();
+    int bestIndex = 0;
+
+    for (int i = 0; i < shapeA.p.vert.size(); i++) {
+        Vect n = shapeA.p.normalFace(i);
+
+        Vect support = getSupport(shapeB, {-n.x, -n.y});
+
+        Vect v = shapeA.p.vert[i];
+        float d = n.x * (support.x - v.x) + n.y * (support.y - v.y);
+
+        if (d > bestDistance) {
+            bestDistance = d;
+            bestIndex = i;
+        }
+    }
+
+    shapeA.collisionLoc = bestIndex;
+    return bestDistance;
 }
 

@@ -18,11 +18,14 @@
 
 class Impulse {
 public:
-    static void initializeObject(Body&);
     static void applyPhysics(Body&, bool);
+    static void applyTorque(Body&);
 private:
-    static void setArea(Body&);
-    static void setMoment(Body&);
-    static void setMass(Body&);
+    static Vect add(Vect, Vect);
+    static Vect sub(Vect, Vect);
+    static Vect scalar(Vect, float);
+    static float dot(Vect, Vect);
+    static float cross(Vect, Vect);
 
+    static Spring spring;
 };

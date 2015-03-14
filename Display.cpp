@@ -11,7 +11,8 @@
 bool Display::remainingEvents;
 
 Display::Display(int width, int height) {
-    FPS = 60;
+    FPS = 45;
+    limitFrames = true;
     ticksPerFrame = 1000 / FPS;
     createWindow(width, height);
 }
@@ -80,10 +81,12 @@ void Display::createWindow(int width, int height) {
         //More FPS stuff
         countedFrames++;
         frameTicks = SDL_GetTicks() - capTimer;
-        if (frameTicks < ticksPerFrame)
-            SDL_Delay(ticksPerFrame - frameTicks);
+        if (!limitFrames)
+            if (frameTicks < ticksPerFrame)
+                if (fabsf(ticksPerFrame - frameTicks) == ticksPerFrame - frameTicks)
+                    SDL_Delay(ticksPerFrame - frameTicks);
     }
-    
+
 	render->freeResources();
 	
 	//close window and clean up

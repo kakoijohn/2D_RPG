@@ -13,18 +13,19 @@
 
 #endif /* defined(___D_RPG__Point__) */
 
-struct Point {
+struct Vect {
     float x;
     float y;
 };
 
 struct Circle {
-    Point center;
+    Vect center;
     float rotation;
     float radius;
 };
 
-struct Vect {
-    float x;
-    float y;
+struct Spring {
+    Vect location;
+    float stiffness;
+    float b;
 };

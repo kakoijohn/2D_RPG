@@ -8,11 +8,7 @@
 
 #include "Impulse.h"
 
-void Impulse::initializeObject(Body& obj) {
-    setArea(obj);
-    setMoment(obj);
-    setMass(obj);
-}
+Spring Impulse::spring = {{200, 0}, 0.5, -1};
 
 void Impulse::applyPhysics(Body& obj, bool isColliding) {
     //http://buildnewgames.com/gamephysics/
@@ -36,35 +32,60 @@ void Impulse::applyPhysics(Body& obj, bool isColliding) {
 
     if (isColliding) {
         obj.vel.y *= obj.restitution;
+        obj.p.move({0, -20});
     }
 }
 
-void Impulse::setArea(Body& obj) {
-    //http://mathworld.wolfram.com/PolygonArea.html
+void Impulse::applyTorque(Body& obj) {
+    float dt = Clock::dt();
 
-    for (int i = 0; i < obj.p.vert.size(); i++) {
-        if (i == obj.p.vert.size() - 1)
-            obj.area += obj.p.vert.at(i).x * obj.p.vert.at(0).y - obj.p.vert.at(0).x - obj.p.vert.at(i).y;
-        else
-            obj.area += obj.p.vert.at(i).x * obj.p.vert.at(i + 1).y - obj.p.vert.at(i + 1).x - obj.p.vert.at(i).y;
-    }
+    Vect f = {0, 0};
+    float torque = 0;
 
-    obj.area = fabsf(0.5f * obj.area);
+    Vect dr = add(scalar(obj.vel, dt), scalar(obj.accel, 0.5 * dt * dt));
+    obj.p.move(scalar(dr, 100));
+
+    f = add(f, scalar(PhysConst::gravity, obj.mass));
+
+    f = add(f, scalar(obj.vel, spring.b));
+
+    Vect springForce = scalar(sub(obj.p.vert[0], spring.location), -1 * spring.stiffness);
+
+    Vect r = sub(obj.p.centroid(), obj.p.vert[0]);
+
+    float rxf = cross(r, springForce);
+
+    torque += -1 * rxf;
+    f = add(f, springForce);
+
+    Vect new_a = scalar(f, obj.mass);
+    Vect dv = scalar(add(obj.accel, new_a), 0.5 * dt);
+    obj.vel = add(obj.vel, dv);
+
+    torque += obj.omega * obj.angularB;
+    obj.alpha = torque / obj.moment;
+    obj.omega += obj.alpha * dt;
+
+    float deltaTheta = obj.omega * dt;
+    obj.p.rotate(deltaTheta, obj.p.centroid());
 }
 
-void Impulse::setMoment(Body& obj) {
-    //http://en.wikipedia.org/wiki/Second_moment_of_area#Any_polygon
-
-    for (int i = 0; i < obj.p.vert.size(); i++) {
-        if (i == obj.p.vert.size() - 1)
-            obj.moment += (obj.p.vert.at(i).x * obj.p.vert.at(0).y + 2 * obj.p.vert.at(0).x * obj.p.vert.at(0).y + obj.p.vert.at(0).x * obj.p.vert.at(i).y) * (obj.p.vert.at(i).x * obj.p.vert.at(0).y - obj.p.vert.at(0).x * obj.p.vert.at(i).y);
-        else
-            obj.moment += (obj.p.vert.at(i).x * obj.p.vert.at(i + 1).y + 2 * obj.p.vert.at(i + 1).x * obj.p.vert.at(i + 1).y + obj.p.vert.at(i + 1).x * obj.p.vert.at(i).y) * (obj.p.vert.at(i).x * obj.p.vert.at(i + 1).y - obj.p.vert.at(i + 1).x * obj.p.vert.at(i).y);
-    }
-
-    obj.moment = fabsf((1/24) * obj.moment);
+Vect Impulse::add(Vect v, Vect w) {
+    return {v.x + w.x, v.y + w.y};
 }
 
-void Impulse::setMass(Body& obj) {
-    obj.mass = obj.density * obj.area;
+Vect Impulse::sub(Vect v, Vect w) {
+    return {v.x - w.x, v.y - w.y};
+}
+
+Vect Impulse::scalar(Vect v, float s) {
+    return {v.x * s, v.y * s};
+}
+
+float Impulse::dot(Vect v, Vect w) {
+    return (v.x * w.x + v.y * w.y);
+}
+
+float Impulse::cross(Vect v, Vect w) {
+    return (v.x * w.y - v.y * w.x);
 }

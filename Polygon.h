@@ -25,16 +25,17 @@ class Polygon {
 public:
     Polygon(int);
 
-    void rotate(float, Point);
-    void move(Point);
-    void set(Point);
+    void rotate(float, Vect);
+    void move(Vect);
+    void set(Vect);
     void resize(float);
-    Point centroid();
+    Vect centroid();
+    Vect normalFace(int);
     void render(SDL_Renderer*);
     void pollEvents();
 
-    std::vector<Point> vert;
+    std::vector<Vect> vert;
 private:
-    Point oPolyPos;
-    Point oMousePos;
+    Vect oPolyPos;
+    Vect oMousePos;
 };

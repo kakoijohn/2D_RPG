@@ -27,12 +27,15 @@ int Render::init(SDL_Window *window) {
     triangle.p.vert[5] = {1, 3};
 
     triangle.p.resize(10);
-    triangle.p.set({200, 50});
+    triangle.p.set({200, 0});
 
-    triangle.density = .5;
-    triangle.restitution = -0.5;
-    Impulse::initializeObject(triangle);
+    triangle.angularB = -7;
 
+    triangle.density = 1;
+    triangle.restitution = -0.8;
+    triangle.dragCoef = .47;
+    triangle.initializeObject();
+    
     base.p.vert[0] = {0, 490};
     base.p.vert[1] = {500, 490};
     
@@ -44,19 +47,20 @@ int Render::init(SDL_Window *window) {
 void Render::updateDisplay() {
     SDL_RenderClear(SDLRender);
 
-    if (Collision::isColliding(triangle.p, base.p))
+    if (Collision::isColliding(triangle, base))
         SDL_SetRenderDrawColor(SDLRender, 255, 0, 0, 255);
     else
         SDL_SetRenderDrawColor(SDLRender, 0, 255, 0, 255);
 
-    if (Collision::isCollidingMouse(triangle.p))
+    if (Collision::isCollidingMouse(triangle))
         triangle.p.pollEvents();
-
-    Impulse::applyPhysics(triangle, Collision::isColliding(triangle.p, base.p));
+    else
+        Impulse::applyPhysics(triangle, Collision::isColliding(triangle, base));
 
     triangle.p.render(SDLRender);
-    
     base.p.render(SDLRender);
+
+    SDL_SetRenderDrawColor(SDLRender, 0, 255, 255, 255);
     
     SDL_SetRenderDrawColor(SDLRender, 0, 0, 0, 255);
     

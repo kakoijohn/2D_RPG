@@ -10,3 +10,4 @@
 
 Vect PhysConst::gravity = {0, 9.8};
 float PhysConst::rhoAir  = 1.2f;
+

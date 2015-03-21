@@ -20,6 +20,8 @@ public:
     static void start();
     static void tick();
     static float dt();
+
+    static float timeStep;
 private:
     static Uint32 currTime;
     static float deltaT;

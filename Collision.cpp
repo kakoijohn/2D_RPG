@@ -112,7 +112,11 @@ float Collision::findAxisLeastPenetration(Body& shapeA, Body& shapeB) {
         }
     }
 
-    shapeA.collisionLoc = bestIndex;
+    shapeA.collisionIndex = bestIndex;
+    shapeA.collisionDepth = bestDistance;
+
+//    std::cout << shapeA.collisionDepth << " " << shapeA.collisionIndex << "\n";
+
     return bestDistance;
 }
 

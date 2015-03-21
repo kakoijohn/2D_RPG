@@ -25,11 +25,13 @@ public:
     Vect force;
     Vect accel;
 
-    int collisionLoc;
-
     float area;
     float mass;
+    float invMass;
     float density;
+
+    int collisionIndex;
+    float collisionDepth;
 
     float theta;
     float omega;

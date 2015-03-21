@@ -18,9 +18,11 @@
 
 class Impulse {
 public:
-    static void applyPhysics(Body&, bool);
+    static void applyPhysics(Body&, Body&, bool);
     static void applyTorque(Body&);
 private:
+    static void positionalCorrection(Body&, Body&);
+
     static Vect add(Vect, Vect);
     static Vect sub(Vect, Vect);
     static Vect scalar(Vect, float);

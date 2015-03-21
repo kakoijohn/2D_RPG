@@ -33,6 +33,10 @@ void Body::setArea() {
 
 void Body::setMass() {
     mass = density * area;
+    if (mass == 0)
+        invMass = 0;
+    else
+        invMass = 1 / mass;
 }
 
 void Body::setMoment() {

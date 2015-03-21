@@ -10,29 +10,30 @@
 
 Spring Impulse::spring = {{200, 0}, 0.5, -1};
 
-void Impulse::applyPhysics(Body& obj, bool isColliding) {
+void Impulse::applyPhysics(Body& objA, Body& objB, bool isColliding) {
     //http://buildnewgames.com/gamephysics/
 
     float dt = Clock::dt();
 
     //weight force y direction
-    float fy = obj.mass * PhysConst::gravity.y;
+    float fy = objA.mass * PhysConst::gravity.y;
     //air resistance
-    fy += -1 * 0.5 * PhysConst::rhoAir * obj.dragCoef * obj.area * obj.vel.y * obj.vel.y;
+    fy += -1 * 0.5 * PhysConst::rhoAir * objA.dragCoef * objA.area * objA.vel.y * objA.vel.y;
 
     //verlet integration
-    float dy = obj.vel.y * dt + (0.5 * obj.accel.y * dt * dt);
+    float dy = objA.vel.y * dt + (0.5 * objA.accel.y * dt * dt);
 
-    obj.p.move({0, dy * 100});
+    objA.p.move({0, dy * 100});
 
-    float new_ay = fy / obj.mass;
-    float avg_ay = 0.5 * (new_ay + obj.accel.y);
+    float new_ay = fy / objA.mass;
+    float avg_ay = 0.5 * (new_ay + objA.accel.y);
 
-    obj.vel.y += avg_ay * dt;
+    objA.vel.y += avg_ay * dt;
 
     if (isColliding) {
-        obj.vel.y *= obj.restitution;
-        obj.p.move({0, -20});
+        objA.vel.y *= objA.restitution;
+        objA.p.move({0, -10});
+//        positionalCorrection(objA, objB);
     }
 }
 
@@ -68,6 +69,15 @@ void Impulse::applyTorque(Body& obj) {
 
     float deltaTheta = obj.omega * dt;
     obj.p.rotate(deltaTheta, obj.p.centroid());
+}
+
+void Impulse::positionalCorrection(Body& objA, Body& objB) {
+    const float percent = 0.2; // usually 20% to 80%
+    const float slop = 0.01; // usually 0.01 to 0.1
+    Vect correction = scalar(objA.p.normalFace(objA.collisionIndex), fmaxf(-objA.collisionDepth - slop, 0.0f) / (objA.invMass + objB.invMass) * percent);
+    objA.p.move(scalar(correction, -objA.invMass));
+
+//    std::cout << correction.x << " " << correction.y << "\n";
 }
 
 Vect Impulse::add(Vect v, Vect w) {

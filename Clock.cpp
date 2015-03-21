@@ -10,13 +10,14 @@
 
 Uint32 Clock::currTime;
 float Clock::deltaT;
+float Clock::timeStep;
 
 void Clock::start() {
     currTime = SDL_GetTicks();
 }
 
 void Clock::tick() {
-    deltaT = (SDL_GetTicks() - currTime) * .001f;
+    deltaT = ((SDL_GetTicks() - currTime) * .001f) * timeStep;
     currTime = SDL_GetTicks();
 }
 

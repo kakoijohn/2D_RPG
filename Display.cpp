@@ -11,7 +11,7 @@
 bool Display::remainingEvents;
 
 Display::Display(int width, int height) {
-    FPS = 60;
+    FPS = 120;
     ticksPerFrame = 1000 / FPS;
     createWindow(width, height);
 }
@@ -47,6 +47,7 @@ void Display::createWindow(int width, int height) {
     int printTicks = 0;
 
     //Global Clock
+    Clock::timeStep = .5;
     Clock::start();
 
 	//display loop

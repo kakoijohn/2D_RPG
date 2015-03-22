@@ -31,7 +31,7 @@ int Render::init(SDL_Window *window) {
 
     triangle.density = .5;
     triangle.restitution = -0.5;
-    Impulse::initializeObject(triangle);
+    triangle.initializeObject();
 
     base.p.vert[0] = {0, 490};
     base.p.vert[1] = {500, 490};
@@ -51,8 +51,8 @@ void Render::updateDisplay() {
 
     if (Collision::isCollidingMouse(triangle.p))
         triangle.p.pollEvents();
-
-    Impulse::applyPhysics(triangle, Collision::isColliding(triangle.p, base.p));
+    else
+        Impulse::applyPhysics(triangle, Collision::isColliding(triangle.p, base.p));
 
     triangle.p.render(SDLRender);
     

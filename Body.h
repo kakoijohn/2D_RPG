@@ -16,6 +16,7 @@
 class Body {
 public:
     Body(int);
+    void initializeObject();
 
     Polygon p;
 
@@ -26,6 +27,7 @@ public:
 
     float area;
     float mass;
+    float invMass;
     float density;
 
     float moment;
@@ -33,4 +35,8 @@ public:
     float dragCoef;
     float statFrict;
     float dynFrict;
+private:
+    void setArea();
+    void setMoment();
+    void setMass();
 };

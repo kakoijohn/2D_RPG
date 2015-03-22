@@ -22,7 +22,7 @@ class Collision {
 public:
     Collision();
     static bool isColliding(Polygon&, Polygon&);
-    static bool isColliding(Point&, Polygon&);
+    static bool isCollidingPoint(Point&, Polygon&);
     static bool isCollidingMouse(Polygon&);
 private:
     static bool oneCollide(Polygon&, Polygon&);

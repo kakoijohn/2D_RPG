@@ -8,12 +8,6 @@
 
 #include "Impulse.h"
 
-void Impulse::initializeObject(Body& obj) {
-    setArea(obj);
-    setMoment(obj);
-    setMass(obj);
-}
-
 void Impulse::applyPhysics(Body& obj, bool isColliding) {
     //http://buildnewgames.com/gamephysics/
 
@@ -36,35 +30,6 @@ void Impulse::applyPhysics(Body& obj, bool isColliding) {
 
     if (isColliding) {
         obj.vel.y *= obj.restitution;
+        obj.p.move({0, -10});
     }
-}
-
-void Impulse::setArea(Body& obj) {
-    //http://mathworld.wolfram.com/PolygonArea.html
-
-    for (int i = 0; i < obj.p.vert.size(); i++) {
-        if (i == obj.p.vert.size() - 1)
-            obj.area += obj.p.vert.at(i).x * obj.p.vert.at(0).y - obj.p.vert.at(0).x - obj.p.vert.at(i).y;
-        else
-            obj.area += obj.p.vert.at(i).x * obj.p.vert.at(i + 1).y - obj.p.vert.at(i + 1).x - obj.p.vert.at(i).y;
-    }
-
-    obj.area = fabsf(0.5f * obj.area);
-}
-
-void Impulse::setMoment(Body& obj) {
-    //http://en.wikipedia.org/wiki/Second_moment_of_area#Any_polygon
-
-    for (int i = 0; i < obj.p.vert.size(); i++) {
-        if (i == obj.p.vert.size() - 1)
-            obj.moment += (obj.p.vert.at(i).x * obj.p.vert.at(0).y + 2 * obj.p.vert.at(0).x * obj.p.vert.at(0).y + obj.p.vert.at(0).x * obj.p.vert.at(i).y) * (obj.p.vert.at(i).x * obj.p.vert.at(0).y - obj.p.vert.at(0).x * obj.p.vert.at(i).y);
-        else
-            obj.moment += (obj.p.vert.at(i).x * obj.p.vert.at(i + 1).y + 2 * obj.p.vert.at(i + 1).x * obj.p.vert.at(i + 1).y + obj.p.vert.at(i + 1).x * obj.p.vert.at(i).y) * (obj.p.vert.at(i).x * obj.p.vert.at(i + 1).y - obj.p.vert.at(i + 1).x * obj.p.vert.at(i).y);
-    }
-
-    obj.moment = fabsf((1/24) * obj.moment);
-}
-
-void Impulse::setMass(Body& obj) {
-    obj.mass = obj.density * obj.area;
 }

@@ -20,9 +20,4 @@ class Impulse {
 public:
     static void initializeObject(Body&);
     static void applyPhysics(Body&, bool);
-private:
-    static void setArea(Body&);
-    static void setMoment(Body&);
-    static void setMass(Body&);
-
 };

@@ -30,9 +30,12 @@ int EventLog::EventFilter(void* userData, SDL_Event* event) {
         case SDL_MOUSEWHEEL:
             SDL_Log("Mouse Wheel");
             return 0;
-    }
 
-    std::cout << "Controllers: " << SDL_NumJoysticks();
+        case SDL_JOYAXISMOTION:
+            SDL_Log("Controller Axis Motion. Val=%d", event->jaxis.value);
+        case SDL_JOYBUTTONDOWN:
+            SDL_Log("Controller Button Down: %d", event->jbutton.button);
+    }
 
     return 1;
 }

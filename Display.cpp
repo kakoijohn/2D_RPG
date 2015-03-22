@@ -30,8 +30,8 @@ void Display::createWindow(int width, int height) {
         SDL_Quit();
 
     //event handlers
-//    SDL_AddEventWatch(EventLog::EventFilter, nullptr);
-    InputEvent::loadInputContext("KeyBindings.json");
+    SDL_AddEventWatch(EventLog::EventFilter, nullptr);
+    InputEvent::loadInputContext("data/configuration/KeyBindings.json");
     SDL_Event event;
 
     //Renderer

@@ -17,8 +17,8 @@
 #include "vector"
 
 #include "SDL2/SDL.h"
-#include "document.h"
-#include "filestream.h"
+#include "data/resources/rapidjson/document.h"
+#include "data/resources/rapidjson/filestream.h"
 
 #include "EventData.h"
 

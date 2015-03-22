@@ -30,6 +30,7 @@ int EventLog::EventFilter(void* userData, SDL_Event* event) {
         case SDL_MOUSEWHEEL:
             SDL_Log("Mouse Wheel");
             return 0;
+            
     }
 
     return 1;

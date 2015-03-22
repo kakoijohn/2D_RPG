@@ -9,7 +9,9 @@
 #include <iostream>
 #include <stdlib.h>
 
-#include "main.h"
+#include "SDL2/SDL.h"
+
+#include "Display.h"
 
 int main(int argc, char** argv){
     Display d(500, 500);

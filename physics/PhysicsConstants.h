@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 
-#include "Structures.h"
+#include "../shapes/Structures.h"
 
 #endif /* defined(___D_RPG__PhysicsConstants__) */
 

@@ -11,7 +11,7 @@
 
 #include "SDL2/SDL.h"
 
-#include "Display.h"
+#include "graphics/Display.h"
 
 int main(int argc, char** argv){
     Display d(500, 500);

@@ -11,8 +11,8 @@
 
 #include <stdio.h>
 
-#include "Body.h"
-#include "Clock.h"
+#include "../shapes/Body.h"
+#include "../utilities/Clock.h"
 
 #endif /* defined(___D_RPG__Impulse__) */
 

@@ -15,9 +15,9 @@
 #include "math.h"
 #include "vector"
 
-#include "InputEvent.h"
-#include "Identifiers.h"
-#include "PhysicsConstants.h"
+#include "../events/InputEvent.h"
+#include "../events/Identifiers.h"
+#include "../physics/PhysicsConstants.h"
 
 #endif /* defined(___D_RPG__Polygon__) */
 

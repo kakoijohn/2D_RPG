@@ -48,7 +48,6 @@ void Polygon::resize(float percent) {
     }
 }
 
-
 Point Polygon::centroid() {
     float Cx;
     float Cy;

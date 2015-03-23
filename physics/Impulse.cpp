@@ -21,7 +21,7 @@ void Impulse::applyPhysics(Body& obj, bool isColliding) {
     //verlet integration
     float dy = obj.vel.y * dt + (0.5 * obj.accel.y * dt * dt);
 
-    obj.p.move({0, dy * 100});
+    obj.move({0, dy * 100});
 
     float new_ay = fy / obj.mass;
     float avg_ay = 0.5 * (new_ay + obj.accel.y);
@@ -30,6 +30,6 @@ void Impulse::applyPhysics(Body& obj, bool isColliding) {
 
     if (isColliding) {
         obj.vel.y *= obj.restitution;
-        obj.p.move({0, -10});
+        obj.move({0, -10});
     }
 }

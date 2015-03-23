@@ -13,13 +13,11 @@
 
 #endif
 
-class Body {
+class Body : public Polygon {
 public:
     Body(int);
     void initializeObject();
-
-    Polygon p;
-
+    
     Vect vel;
     Vect angVel;
     Vect force;

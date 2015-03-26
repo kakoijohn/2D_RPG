@@ -12,19 +12,21 @@ Manifold::Manifold() {
 
 }
 
-void Manifold::applyInteractions(Body& shapeA, Body& shapeB) {
-    cData = Collision::isCollidingMTV(shapeA, shapeB);
+void Manifold::applyInteractions(Body& objA, Body& objB) {
+    cData = Collision::isCollidingMTV(objA, objB);
 
     if (cData.MTV == -1)
         colliding = false;
     else
         colliding = true;
 
-    Impulse::applyPhysics(shapeA);
-    Impulse::applyPhysics(shapeB);
+    Impulse::applyPhysics(objA, cData);
+    Impulse::applyPhysics(objB, cData);
 
-    if (colliding)
-        Impulse::resolveCollision(shapeA, shapeB, cData);
+    if (colliding) {
+        Impulse::resolveCollision(objA, objB, cData);
+//        Impulse::positionalCorrection(objA, objB, cData);
+    }
 }
 
 

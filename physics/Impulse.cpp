@@ -8,7 +8,7 @@
 
 #include "Impulse.h"
 
-void Impulse::applyPhysics(Body& obj) {
+void Impulse::applyPhysics(Body& obj, CollData& cData) {
     if (obj.mass == 0)
         return;
 
@@ -38,29 +38,42 @@ void Impulse::applyPhysics(Body& obj) {
     obj.vel.y += avg_ay * dt;
 }
 
-void Impulse::resolveCollision(Body& objA, Body& objB, CollData cData) {
+void Impulse::resolveCollision(Body& objA, Body& objB, CollData& cData) {
     if (objA.mass == 0 && objB.mass == 0)
         return;
 
-    if (cData.MTV > 0) {
-        if (objA.mass != 0)
-            objA.move({-cData.MTV * cData.normal.x, -cData.MTV * cData.normal.y});
-        else if (objB.mass != 0)
-            objB.move({cData.MTV * cData.normal.x, cData.MTV * cData.normal.y});
+    if (objA.mass != 0)
+        objA.move({-cData.MTV * cData.normal.x, -cData.MTV * cData.normal.y});
+    else if (objB.mass != 0)
+        objB.move({cData.MTV * cData.normal.x, cData.MTV * cData.normal.y});
 
-        Vect relVel = {objB.vel.x - objA.vel.x, objB.vel.y - objA.vel.y};
-        float velAlongNormal = relVel.x * cData.normal.x + relVel.y * cData.normal.y;
+    Vect relVel = {objB.vel.x - objA.vel.x, objB.vel.y - objA.vel.y};
+    float velAlongNormal = relVel.x * cData.normal.x + relVel.y * cData.normal.y;
 
-        if (velAlongNormal > 0)
-            return;
+    if (velAlongNormal > 0)
+        return;
 
-        float e = (objA.restitution + objB.restitution) / 2;
-        float j = (-(1 + e) * velAlongNormal) / (objA.invMass + objB.invMass);
+    float e = (objA.restitution + objB.restitution) / 2;
+    float j = (-(1 + e) * velAlongNormal) / (objA.invMass + objB.invMass);
 
-        Vect impulse = {j * cData.normal.x, j * cData.normal.y};
-        if (objA.mass != 0)
-            objA.vel = {objA.vel.x - objA.invMass * impulse.x, objA.vel.y - objA.invMass * impulse.y};
-        if (objB.mass != 0)
-            objB.vel = {objB.vel.x + objB.invMass * impulse.x, objB.vel.y + objB.invMass * impulse.y};
-    }
+    Vect impulse = {j * cData.normal.x, j * cData.normal.y};
+
+    if (objA.mass != 0)
+        objA.vel = {objA.vel.x - objA.invMass * impulse.x, objA.vel.y - objA.invMass * impulse.y};
+    if (objB.mass != 0)
+        objB.vel = {objB.vel.x + objB.invMass * impulse.x, objB.vel.y + objB.invMass * impulse.y};
+}
+
+void Impulse::positionalCorrection(Body& objA, Body& objB, CollData& cData) {
+    //Still a work in progress. Will come back if deemed necessary.
+
+    float percent = 0.2; // 20% to 80%
+    float slop = 0.01; // .01 to .1
+    float magnitude = fmaxf(cData.MTV - slop, 0.0f) / (objA.invMass + objB.invMass) * percent;
+    Vect correction = {magnitude * cData.normal.x, magnitude * cData.normal.y};
+
+    if (objA.mass != 0)
+        objA.move({-objA.invMass * correction.x, -objA.invMass * correction.y});
+    if (objB.mass != 0)
+        objB.move({objB.invMass * correction.x, objB.invMass * correction.y});
 }

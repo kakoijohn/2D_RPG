@@ -51,10 +51,10 @@ void Render::updateDisplay() {
 
     man.applyInteractions(triangle, base);
 
-    if (man.colliding)
+//    if (man.colliding)
         SDL_SetRenderDrawColor(SDLRender, 255, 0, 0, 255);
-    else
-        SDL_SetRenderDrawColor(SDLRender, 0, 255, 0, 255);
+//    else
+//        SDL_SetRenderDrawColor(SDLRender, 0, 255, 0, 255);
 
 //    if (Collision::isCollidingMouse(triangle))
         triangle.pollEvents();

@@ -20,9 +20,6 @@ public:
     CollData cData;
     bool colliding;
 
-    Body shapeA;
-    Body shapeB;
-
     Manifold();
 
     void applyInteractions(Body&, Body&);

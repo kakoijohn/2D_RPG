@@ -16,6 +16,7 @@
 class Body : public Polygon {
 public:
     Body(int);
+    Body();
     void initializeObject();
     
     Vect vel;

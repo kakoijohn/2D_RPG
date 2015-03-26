@@ -22,8 +22,9 @@ class Collision {
 public:
     Collision();
     static bool isColliding(Polygon&, Polygon&);
+    static CollData isCollidingMTV(Polygon&, Polygon&);
     static bool isCollidingPoint(Point&, Polygon&);
     static bool isCollidingMouse(Polygon&);
 private:
-    static bool oneCollide(Polygon&, Polygon&);
+    static CollData oneCollide(Polygon&, Polygon&);
 };

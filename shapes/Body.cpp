@@ -12,10 +12,19 @@ Body::Body(int vertecies) : Polygon(vertecies) {
     
 }
 
+Body::Body() : Polygon(0) {
+
+}
+
 void Body::initializeObject() {
     setArea();
     setMoment();
     setMass();
+
+    vel    = {0, 0};
+    angVel = {0, 0};
+    force  = {0, 0};
+    accel  = {0, 0};
 }
 
 void Body::setArea() {

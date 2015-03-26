@@ -34,6 +34,7 @@ public:
     void pollEvents();
 
     std::vector<Point> vert;
+    float MTV;
 private:
     Point oPolyPos;
     Point oMousePos;

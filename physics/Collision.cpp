@@ -14,10 +14,15 @@ Collision::Collision() {
 
 bool Collision::isColliding(Polygon& shapeA, Polygon& shapeB) {
     if (shapeA.vert.size() > 1 && shapeB.vert.size() > 1) {
-        if (!oneCollide(shapeA, shapeB))
+        float minOverlap = oneCollide(shapeA, shapeB).MTV;
+        if (minOverlap <= 0)
             return false;
-        if (!oneCollide(shapeB, shapeA))
+        minOverlap = fminf(minOverlap, oneCollide(shapeB, shapeA).MTV);
+        if (minOverlap <= 0)
             return false;
+
+        shapeA.MTV = minOverlap;
+        shapeB.MTV = minOverlap;
     } else if (shapeA.vert.size() > 1 && shapeB.vert.size() <= 1) {
         if (!isCollidingPoint(shapeB.vert.at(0), shapeA))
             return false;
@@ -29,7 +34,24 @@ bool Collision::isColliding(Polygon& shapeA, Polygon& shapeB) {
     return true;
 }
 
-bool Collision::oneCollide(Polygon& shapeA, Polygon& shapeB) {
+CollData Collision::isCollidingMTV(Polygon& shapeA, Polygon& shapeB) {
+    CollData dataA = oneCollide(shapeA, shapeB);
+    if (dataA.MTV < 0)
+        return {{0, 0}, -1};
+    CollData dataB = oneCollide(shapeB, shapeA);
+    if (dataB.MTV < 0)
+        return {{0, 0}, -1};
+
+    if (dataA.MTV < dataB.MTV)
+        return dataA;
+    else
+        return dataB;
+}
+
+CollData Collision::oneCollide(Polygon& shapeA, Polygon& shapeB) {
+    float minOverlap = std::numeric_limits<float>::max();
+    Vect collNormal;
+
     for (int a = 0; a < shapeA.vert.size(); a++) {
         float Vx;
         float Vy;
@@ -41,6 +63,10 @@ bool Collision::oneCollide(Polygon& shapeA, Polygon& shapeB) {
             Vx = -(shapeA.vert.at(a + 1).y - shapeA.vert.at(a).y);
             Vy = shapeA.vert.at(a + 1).x - shapeA.vert.at(a).x;
         }
+
+        float Vmag = sqrtf(Vx * Vx + Vy * Vy);
+        Vx = Vx / Vmag;
+        Vy = Vy / Vmag;
 
         float TAmin = std::numeric_limits<float>::max();
         float TAmax = -TAmin;
@@ -71,10 +97,16 @@ bool Collision::oneCollide(Polygon& shapeA, Polygon& shapeB) {
         }
 
         if (!(TBmin <= TAmax && TBmax >= TAmin))
-            return false;
+            return {{0, 0}, -1};
+
+        float overlap = fminf(fabsf(TAmax - TBmin), fabsf(TBmax - TAmin));
+        if (minOverlap > overlap) {
+            minOverlap = overlap;
+            collNormal = {Vx, Vy};
+        }
     }
-    
-    return true;
+
+    return {collNormal, minOverlap};
 }
 
 bool Collision::isCollidingPoint(Point& point, Polygon& shape) {

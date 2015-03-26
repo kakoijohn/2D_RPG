@@ -28,3 +28,8 @@ struct Vect {
     float x;
     float y;
 };
+
+struct CollData {
+    Vect normal;
+    float MTV;
+};

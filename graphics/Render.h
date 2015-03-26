@@ -13,7 +13,7 @@
 
 #include "iostream"
 
-#include "../physics/Collision.h"
+#include "../physics/Manifold.h"
 
 #endif /* defined(__RPGGameEngine__Render__) */
 class Render {

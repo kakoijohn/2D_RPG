@@ -52,7 +52,8 @@ void Display::createWindow(int width, int height) {
 
     //Joysticks
     SDL_Joystick* gameController = nullptr;
-    gameController = SDL_JoystickOpen(0);
+    if (SDL_NumJoysticks() > 0)
+        gameController = SDL_JoystickOpen(0);
 
 	//display loop
     bool done = false;

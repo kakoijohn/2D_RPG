@@ -9,7 +9,7 @@
 #include "Render.h"
 
 SDL_Renderer *SDLRender;
-Body triangle(6);
+Body rectangle(4);
 Body base(2);
 Manifold man;
 
@@ -20,22 +20,21 @@ Render::Render() {
 int Render::init(SDL_Window *window) {
     InputEvent::loadState("default");
 
-    triangle.vert[0] = {2, 1};
-    triangle.vert[1] = {4, 1};
-    triangle.vert[2] = {5, 3};
-    triangle.vert[3] = {4, 5};
-    triangle.vert[4] = {2, 5};
-    triangle.vert[5] = {1, 3};
+    rectangle[0] = {0, 0};
+    rectangle[1] = {0, 1};
+    rectangle[2] = {1, 1};
+    rectangle[3] = {1, 0};
 
-    triangle.resize(10);
-    triangle.set({200, 50});
+    rectangle.resize(10);
+    rectangle.set({200, 50});
 
-    triangle.density = 1;
-    triangle.restitution = 0.5;
-    triangle.initializeObject();
+    rectangle.dragCoef = 0.47;
+    rectangle.density = 1;
+    rectangle.restitution = 0.5;
+    rectangle.initializeObject();
 
-    base.vert[0] = {0, 490};
-    base.vert[1] = {500, 490};
+    base[0] = {0, 490};
+    base[1] = {500, 490};
 
     base.density = 0;
     base.restitution = 0.5;
@@ -49,7 +48,7 @@ int Render::init(SDL_Window *window) {
 void Render::updateDisplay() {
     SDL_RenderClear(SDLRender);
 
-    man.applyInteractions(triangle, base);
+    man.applyInteractions(rectangle, base);
 
 //    if (man.colliding)
         SDL_SetRenderDrawColor(SDLRender, 255, 0, 0, 255);
@@ -57,11 +56,11 @@ void Render::updateDisplay() {
 //        SDL_SetRenderDrawColor(SDLRender, 0, 255, 0, 255);
 
 //    if (Collision::isCollidingMouse(triangle))
-        triangle.pollEvents();
+        rectangle.pollEvents();
 //    else
 //        Impulse::applyPhysics(triangle, Collision::isColliding(triangle, base));
 
-    triangle.render(SDLRender);
+    rectangle.render(SDLRender);
     
     base.render(SDLRender);
     

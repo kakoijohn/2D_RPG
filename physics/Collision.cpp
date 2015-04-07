@@ -13,21 +13,18 @@ Collision::Collision() {
 }
 
 bool Collision::isColliding(Polygon& shapeA, Polygon& shapeB) {
-    if (shapeA.vert.size() > 1 && shapeB.vert.size() > 1) {
+    if (shapeA.size() > 1 && shapeB.size() > 1) {
         float minOverlap = oneCollide(shapeA, shapeB).MTV;
         if (minOverlap <= 0)
             return false;
         minOverlap = fminf(minOverlap, oneCollide(shapeB, shapeA).MTV);
         if (minOverlap <= 0)
             return false;
-
-        shapeA.MTV = minOverlap;
-        shapeB.MTV = minOverlap;
-    } else if (shapeA.vert.size() > 1 && shapeB.vert.size() <= 1) {
-        if (!isCollidingPoint(shapeB.vert.at(0), shapeA))
+    } else if (shapeA.size() > 1 && shapeB.size() <= 1) {
+        if (!isCollidingPoint(shapeB.at(0), shapeA))
             return false;
-    } else if (shapeB.vert.size() > 1 && shapeA.vert.size() <= 1) {
-        if (!isCollidingPoint(shapeA.vert.at(0), shapeB))
+    } else if (shapeB.size() > 1 && shapeA.size() <= 1) {
+        if (!isCollidingPoint(shapeA.at(0), shapeB))
             return false;
     }
 
@@ -37,31 +34,35 @@ bool Collision::isColliding(Polygon& shapeA, Polygon& shapeB) {
 CollData Collision::isCollidingMTV(Polygon& shapeA, Polygon& shapeB) {
     CollData dataA = oneCollide(shapeA, shapeB);
     if (dataA.MTV < 0)
-        return {{0, 0}, -1};
+        return {{0, 0}, -1, -1};
     CollData dataB = oneCollide(shapeB, shapeA);
     if (dataB.MTV < 0)
-        return {{0, 0}, -1};
+        return {{0, 0}, -1, -1};
 
-    if (dataA.MTV < dataB.MTV)
+    if (dataA.MTV > dataB.MTV) {
+        dataA.collisionPoints = findCollidingPoints(shapeA, shapeB);
         return dataA;
-    else
+    } else {
+        dataB.collisionPoints = findCollidingPoints(shapeB, shapeA);
         return dataB;
+    }
 }
 
 CollData Collision::oneCollide(Polygon& shapeA, Polygon& shapeB) {
     float minOverlap = std::numeric_limits<float>::max();
     Vect collNormal;
+    int collisionFace = 0;
 
-    for (int a = 0; a < shapeA.vert.size(); a++) {
+    for (int a = 0; a < shapeA.size(); a++) {
         float Vx;
         float Vy;
         
-        if (a == shapeA.vert.size() - 1) {
-            Vx = -(shapeA.vert.at(a).y - shapeA.vert.at(0).y);
-            Vy = shapeA.vert.at(a).x - shapeA.vert.at(0).x;
+        if (a == shapeA.size() - 1) {
+            Vx = -(shapeA.at(a).y - shapeA.at(0).y);
+            Vy = shapeA.at(a).x - shapeA.at(0).x;
         } else {
-            Vx = -(shapeA.vert.at(a + 1).y - shapeA.vert.at(a).y);
-            Vy = shapeA.vert.at(a + 1).x - shapeA.vert.at(a).x;
+            Vx = -(shapeA.at(a + 1).y - shapeA.at(a).y);
+            Vy = shapeA.at(a + 1).x - shapeA.at(a).x;
         }
 
         float Vmag = sqrtf(Vx * Vx + Vy * Vy);
@@ -71,8 +72,8 @@ CollData Collision::oneCollide(Polygon& shapeA, Polygon& shapeB) {
         float TAmin = std::numeric_limits<float>::max();
         float TAmax = -TAmin;
         
-        for (int i = 0; i < shapeA.vert.size(); i++) {
-            float TAv = (shapeA.vert.at(i).x * Vx + shapeA.vert.at(i).y * Vy) / (Vx * Vx + Vy * Vy);
+        for (int i = 0; i < shapeA.size(); i++) {
+            float TAv = (shapeA.at(i).x * Vx + shapeA.at(i).y * Vy) / (Vx * Vx + Vy * Vy);
             float TAvx = TAv * Vx;
             float TAvy = TAv * Vy;
             
@@ -85,8 +86,8 @@ CollData Collision::oneCollide(Polygon& shapeA, Polygon& shapeB) {
         float TBmin = std::numeric_limits<float>::max();
         float TBmax = -TBmin;
         
-        for (int i = 0; i < shapeB.vert.size(); i++) {
-            float TBv = (shapeB.vert.at(i).x * Vx + shapeB.vert.at(i).y * Vy) / (Vx * Vx + Vy * Vy);
+        for (int i = 0; i < shapeB.size(); i++) {
+            float TBv = (shapeB.at(i).x * Vx + shapeB.at(i).y * Vy) / (Vx * Vx + Vy * Vy);
             float TBvx = TBv * Vx;
             float TBvy = TBv * Vy;
             
@@ -97,36 +98,37 @@ CollData Collision::oneCollide(Polygon& shapeA, Polygon& shapeB) {
         }
 
         if (!(TBmin <= TAmax && TBmax >= TAmin))
-            return {{0, 0}, -1};
+            return {{0, 0}, -1, -1};
 
         float overlap = fminf(fabsf(TAmax - TBmin), fabsf(TBmax - TAmin));
         if (minOverlap > overlap) {
             minOverlap = overlap;
             collNormal = {Vx, Vy};
+            collisionFace = a;
         }
     }
 
-    return {collNormal, minOverlap};
+    return {collNormal, minOverlap, collisionFace};
 }
 
-bool Collision::isCollidingPoint(Point& point, Polygon& shape) {
-    for (int a = 0; a < shape.vert.size(); a++) {
+bool Collision::isCollidingPoint(Vect& point, Polygon& shape) {
+    for (int a = 0; a < shape.size(); a++) {
         float Vx;
         float Vy;
 
-        if (a == shape.vert.size() - 1) {
-            Vx = -(shape.vert.at(a).y - shape.vert.at(0).y);
-            Vy = shape.vert.at(a).x - shape.vert.at(0).x;
+        if (a == shape.size() - 1) {
+            Vx = -(shape.at(a).y - shape.at(0).y);
+            Vy = shape.at(a).x - shape.at(0).x;
         } else {
-            Vx = -(shape.vert.at(a + 1).y - shape.vert.at(a).y);
-            Vy = shape.vert.at(a + 1).x - shape.vert.at(a).x;
+            Vx = -(shape.at(a + 1).y - shape.at(a).y);
+            Vy = shape.at(a + 1).x - shape.at(a).x;
         }
 
         float TAmin = std::numeric_limits<float>::max();
         float TAmax = -TAmin;
 
-        for (int i = 0; i < shape.vert.size(); i++) {
-            float TAv = (shape.vert.at(i).x * Vx + shape.vert.at(i).y * Vy) / (Vx * Vx + Vy * Vy);
+        for (int i = 0; i < shape.size(); i++) {
+            float TAv = (shape.at(i).x * Vx + shape.at(i).y * Vy) / (Vx * Vx + Vy * Vy);
             float TAvx = TAv * Vx;
             float TAvy = TAv * Vy;
 
@@ -152,8 +154,41 @@ bool Collision::isCollidingPoint(Point& point, Polygon& shape) {
 bool Collision::isCollidingMouse(Polygon& shape) {
     int mX, mY;
     SDL_GetMouseState(&mX, &mY);
-    Point p = {(float)mX, (float)mY};
+    Vect p = {(float)mX, (float)mY};
 
     return isCollidingPoint(p, shape);
+}
+
+std::vector<Vect> Collision::findCollidingPoints(Polygon& shapeA, Polygon& shapeB) {
+    std::vector<Vect> points(0);
+
+    for (int i = 0; i < shapeA.size() - 1; i++) {
+        Polygon lineA(2);
+        lineA[0] = shapeA[i];
+        lineA[1] = shapeA[i + 1];
+
+        if (isColliding(lineA, shapeB)) {
+            for (int j = 0; j < shapeB.size() - 1; j++) {
+                Polygon lineB(2);
+                lineB[0] = shapeB[j];
+                lineB[1] = shapeB[j + 1];
+
+                if (isColliding(lineA, lineB)) {
+                    float mA = (lineA[1].y - lineA[0].y) / (lineA[1].x - lineA[0].x);
+                    float bA = -mA * lineA[0].x - lineA[0].y;
+
+                    float mB = (lineB[1].y - lineB[0].y) / (lineB[1].x - lineB[0].x);
+                    float bB = -mA * lineB[0].x - lineB[0].y;
+
+                    float x = (bB - bA) / (mA - mB);
+                    float y = mA * x + bA;
+
+                    points.push_back({x, y});
+                }
+            }
+        }
+    }
+
+    return points;
 }
 

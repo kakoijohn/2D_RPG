@@ -23,8 +23,9 @@ public:
     Collision();
     static bool isColliding(Polygon&, Polygon&);
     static CollData isCollidingMTV(Polygon&, Polygon&);
-    static bool isCollidingPoint(Point&, Polygon&);
+    static bool isCollidingPoint(Vect&, Polygon&);
     static bool isCollidingMouse(Polygon&);
 private:
     static CollData oneCollide(Polygon&, Polygon&);
+    static std::vector<Vect> findCollidingPoints(Polygon&, Polygon&);
 };

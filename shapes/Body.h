@@ -29,6 +29,10 @@ public:
     float invMass;
     float density;
 
+    float theta;
+    float omega;
+    float alpha;
+
     float moment;
     float restitution;
     float dragCoef;

@@ -18,8 +18,16 @@
 
 class Impulse {
 public:
-    static void initializeObject(Body&);
     static void applyPhysics(Body&, CollData&);
+    static void applyRotation(Body&, CollData&);
+    
     static void resolveCollision(Body&, Body&, CollData&);
     static void positionalCorrection(Body&, Body&, CollData&);
+private:
+    static Vect add(Vect, Vect);
+    static Vect subtract(Vect, Vect);
+    static Vect scalar(Vect, float);
+    static float dot(Vect, Vect);
+    static float cross(Vect, Vect);
+    static float distance(Vect, Vect);
 };

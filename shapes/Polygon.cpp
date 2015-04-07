@@ -8,57 +8,78 @@
 
 #include "Polygon.h"
 
-Polygon::Polygon(int vertecies) {
-    vert.resize(vertecies);
+Polygon::Polygon(int vertecies) : std::vector<Vect>(vertecies){
+
 }
 
-void Polygon::rotate(float rad, Point point) {
-    for (int i = 0; i < vert.size(); i++) {
-        float distance = sqrtf(powf((point.x - vert.at(i).x), 2) + powf((point.y - vert.at(i).y), 2));
-        float theta = atan2f((vert.at(i).y - point.y), (vert.at(i).x - point.x));
+Polygon::Polygon() : std::vector<Vect>(0) {
+
+}
+
+void Polygon::addVert(Vect vert) {
+    this->push_back(vert);
+}
+
+void Polygon::rotate(float rad, Vect point) {
+    for (int i = 0; i < this->size(); i++) {
+        float distance = sqrtf(powf((point.x - this->at(i).x), 2) + powf((point.y - this->at(i).y), 2));
+        float theta = atan2f((this->at(i).y - point.y), (this->at(i).x - point.x));
 
         theta += rad;
         
-        vert.at(i).x = point.x + distance * cosf(theta);
-        vert.at(i).y = point.y + distance * sinf(theta);
+        this->at(i).x = point.x + distance * cosf(theta);
+        this->at(i).y = point.y + distance * sinf(theta);
+    }
+
+    rotation += rad;
+}
+
+void Polygon::setRot(float rad, Vect point) {
+    for (int i = 0; i < this->size(); i++) {
+        float distance = sqrtf(powf((point.x - this->at(i).x), 2) + powf((point.y - this->at(i).y), 2));
+
+        this->at(i).x = point.x + distance * cosf(rad);
+        this->at(i).y = point.y + distance * sinf(rad);
+    }
+
+    rotation = rad;
+}
+
+void Polygon::move(Vect delta) {
+    for (int i = 0; i < this->size(); i++) {
+        this->at(i).x += delta.x;
+        this->at(i).y += delta.y;
     }
 }
 
-void Polygon::move(Point delta) {
-    for (int i = 0; i < vert.size(); i++) {
-        vert.at(i).x += delta.x;
-        vert.at(i).y += delta.y;
-    }
-}
-
-void Polygon::set(Point location) {
-    Point original = vert.at(0);
-    if (vert.size() > 1)
-        for (int i = 1; i < vert.size(); i++) {
-            vert.at(i).x = (vert.at(i).x - original.x) + location.x;
-            vert.at(i).y = (vert.at(i).y - original.y) + location.y;
+void Polygon::set(Vect location) {
+    Vect original = this->at(0);
+    if (this->size() > 1)
+        for (int i = 1; i < this->size(); i++) {
+            this->at(i).x = (this->at(i).x - original.x) + location.x;
+            this->at(i).y = (this->at(i).y - original.y) + location.y;
         }
-    vert.at(0) = location;
+    this->at(0) = location;
 }
 
 void Polygon::resize(float percent) {
-    for (int i = 0; i < vert.size(); i++) {
-        vert.at(i).x *= percent;
-        vert.at(i).y *= percent;
+    for (int i = 0; i < this->size(); i++) {
+        this->at(i).x *= percent;
+        this->at(i).y *= percent;
     }
 }
 
-Point Polygon::centroid() {
+Vect Polygon::centroid() {
     float Cx;
     float Cy;
 
-    for (int i = 0; i < vert.size(); i++) {
-        Cx += vert.at(i).x;
-        Cy += vert.at(i).y;
+    for (int i = 0; i < this->size(); i++) {
+        Cx += this->at(i).x;
+        Cy += this->at(i).y;
     }
 
-    Cx = Cx / vert.size();
-    Cy = Cy / vert.size();
+    Cx = Cx / this->size();
+    Cy = Cy / this->size();
 
     return {Cx, Cy};
 }
@@ -69,7 +90,7 @@ void Polygon::pollEvents() {
         if (events.at(i).active == true) {
             if (events.at(i).identifier == polygon_drag_start) {
                 oMousePos = {events.at(i).x, events.at(i).y};
-                oPolyPos = vert.at(0);
+                oPolyPos = this->at(0);
             } else if (events.at(i).identifier == polygon_move)
                 set({(events.at(i).x - oMousePos.x) + oPolyPos.x, (events.at(i).y - oMousePos.y) + oPolyPos.y});
             else if (events.at(i).identifier == polygon_rotate_right)
@@ -81,9 +102,9 @@ void Polygon::pollEvents() {
 }
 
 void Polygon::render(SDL_Renderer *SDLRender) {
-    for (int i = 0; i < vert.size(); i++)
-        if (i == vert.size() - 1)
-            SDL_RenderDrawLine(SDLRender, vert.at(i).x, vert.at(i).y, vert[0].x, vert[0].y);
+    for (int i = 0; i < this->size(); i++)
+        if (i == this->size() - 1)
+            SDL_RenderDrawLine(SDLRender, this->at(i).x, this->at(i).y, this->at(0).x, this->at(0).y);
         else
-            SDL_RenderDrawLine(SDLRender, vert.at(i).x, vert.at(i).y, vert[i + 1].x, vert[i + 1].y);
+            SDL_RenderDrawLine(SDLRender, this->at(i).x, this->at(i).y, this->at(i + 1).x, this->at(i + 1).y);
 }

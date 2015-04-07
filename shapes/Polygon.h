@@ -13,7 +13,6 @@
 #include "SDL2/SDL.h"
 
 #include "math.h"
-#include "vector"
 
 #include "../events/InputEvent.h"
 #include "../events/Identifiers.h"
@@ -21,21 +20,24 @@
 
 #endif /* defined(___D_RPG__Polygon__) */
 
-class Polygon {
+class Polygon : public std::vector<Vect> {
 public:
     Polygon(int);
+    Polygon();
 
-    void rotate(float, Point);
-    void move(Point);
-    void set(Point);
+    void addVert(Vect);
+
+    void rotate(float, Vect);
+    void setRot(float, Vect);
+    void move(Vect);
+    void set(Vect);
     void resize(float);
-    Point centroid();
+    Vect centroid();
     void render(SDL_Renderer*);
     void pollEvents();
-
-    std::vector<Point> vert;
-    float MTV;
+    
+    float rotation;
 private:
-    Point oPolyPos;
-    Point oMousePos;
+    Vect oPolyPos;
+    Vect oMousePos;
 };

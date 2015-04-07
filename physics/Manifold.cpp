@@ -12,8 +12,14 @@ Manifold::Manifold() {
 
 }
 
-void Manifold::applyInteractions(Body& objA, Body& objB) {
+void Manifold::applyInteractions(Body& objA, Body& objB, SDL_Renderer* renderer) {
     cData = Collision::isCollidingMTV(objA, objB);
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+    for (int i = 0; i < cData.collisionPoints.size(); i++) {
+        SDL_RenderDrawPoint(renderer, cData.collisionPoints[i].x, cData.collisionPoints[i].y);
+        std::cout << cData.collisionPoints[i].x << " " << cData.collisionPoints[i].y << "\n";
+    }
 
     if (cData.MTV == -1)
         colliding = false;
@@ -31,5 +37,3 @@ void Manifold::applyInteractions(Body& objA, Body& objB) {
         Impulse::positionalCorrection(objA, objB, cData);
     }
 }
-
-

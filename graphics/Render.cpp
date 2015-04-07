@@ -48,7 +48,7 @@ int Render::init(SDL_Window *window) {
 void Render::updateDisplay() {
     SDL_RenderClear(SDLRender);
 
-    man.applyInteractions(rectangle, base);
+    man.applyInteractions(rectangle, base, SDLRender);
 
 //    if (man.colliding)
         SDL_SetRenderDrawColor(SDLRender, 255, 0, 0, 255);
@@ -63,7 +63,7 @@ void Render::updateDisplay() {
     rectangle.render(SDLRender);
     
     base.render(SDLRender);
-    
+
     SDL_SetRenderDrawColor(SDLRender, 0, 0, 0, 255);
     
     SDL_RenderPresent(SDLRender);

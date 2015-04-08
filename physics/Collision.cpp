@@ -39,7 +39,7 @@ CollData Collision::isCollidingMTV(Polygon& shapeA, Polygon& shapeB) {
     if (dataB.MTV < 0)
         return {{0, 0}, -1, -1};
 
-    if (dataA.MTV > dataB.MTV) {
+    if (dataA.MTV < dataB.MTV) {
         dataA.collisionPoints = findCollidingPoints(shapeA, shapeB);
         return dataA;
     } else {
@@ -162,26 +162,40 @@ bool Collision::isCollidingMouse(Polygon& shape) {
 std::vector<Vect> Collision::findCollidingPoints(Polygon& shapeA, Polygon& shapeB) {
     std::vector<Vect> points(0);
 
-    for (int i = 0; i < shapeA.size() - 1; i++) {
+    for (int i = 0; i < shapeA.size(); i++) {
         Polygon lineA(2);
-        lineA[0] = shapeA[i];
-        lineA[1] = shapeA[i + 1];
+        if (i == shapeA.size() - 1 && shapeA.size() > 2) {
+            lineA[0] = shapeA[i];
+            lineA[1] = shapeA[0];
+        } else {
+            lineA[0] = shapeA[i];
+            lineA[1] = shapeA[i + 1];
+        }
 
         if (isColliding(lineA, shapeB)) {
-            for (int j = 0; j < shapeB.size() - 1; j++) {
+            for (int j = 0; j < shapeB.size(); j++) {
                 Polygon lineB(2);
-                lineB[0] = shapeB[j];
-                lineB[1] = shapeB[j + 1];
+                if (j == shapeB.size() - 1 && shapeB.size() > 2) {
+                    lineB[0] = shapeB[j];
+                    lineB[1] = shapeB[0];
+                } else {
+                    lineB[0] = shapeB[j];
+                    lineB[1] = shapeB[j + 1];
+                }
 
                 if (isColliding(lineA, lineB)) {
-                    float mA = (lineA[1].y - lineA[0].y) / (lineA[1].x - lineA[0].x);
+                    float mA = (lineA[0].y - lineA[1].y) / (lineA[0].x - lineA[1].x);
                     float bA = -mA * lineA[0].x - lineA[0].y;
 
-                    float mB = (lineB[1].y - lineB[0].y) / (lineB[1].x - lineB[0].x);
+                    float mB = (lineB[0].y - lineB[1].y) / (lineB[0].x - lineB[1].x);
                     float bB = -mA * lineB[0].x - lineB[0].y;
 
                     float x = (bB - bA) / (mA - mB);
                     float y = mA * x + bA;
+
+                    std::cout << "1: y = " << mA << "x + " << bA << "\n";
+                    std::cout << "2: y = " << mB << "x + " << bB << "\n";
+                    std::cout << "x = " << x << ", y= " << y << "\n";
 
                     points.push_back({x, y});
                 }

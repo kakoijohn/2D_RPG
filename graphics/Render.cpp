@@ -31,6 +31,8 @@ int Render::init(SDL_Window *window) {
     rectangle.dragCoef = 0.47;
     rectangle.density = 1;
     rectangle.restitution = 0.5;
+    rectangle.damping = -1;
+    rectangle.angDamp = -1;
     rectangle.initializeObject();
 
     base[0] = {0, 490};

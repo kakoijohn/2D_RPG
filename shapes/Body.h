@@ -33,6 +33,9 @@ public:
     float omega;
     float alpha;
 
+    float damping;
+    float angDamp;
+
     float moment;
     float restitution;
     float dragCoef;

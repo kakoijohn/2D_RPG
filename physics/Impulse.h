@@ -19,7 +19,6 @@
 class Impulse {
 public:
     static void applyPhysics(Body&, CollData&);
-    static void applyRotation(Body&, CollData&);
     
     static void resolveCollision(Body&, Body&, CollData&);
     static void positionalCorrection(Body&, Body&, CollData&);

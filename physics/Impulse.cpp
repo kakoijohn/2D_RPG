@@ -14,6 +14,7 @@ void Impulse::applyPhysics(Body& obj, CollData& cData) {
 
     //http://buildnewgames.com/gamephysics/
 
+    float torque = 0;
     float dt = Clock::dt();
 
     //weight force y direction
@@ -22,23 +23,35 @@ void Impulse::applyPhysics(Body& obj, CollData& cData) {
     f = add(f, scalar({obj.vel.x * obj.vel.x, obj.vel.y * obj.vel.y}, -1 * 0.5 * PhysConst::rhoAir * obj.dragCoef * obj.area));
 
     //verlet integration
-    Vect der = scalar(obj.vel, dt + (0.5 * obj.accel.x * dt * dt));
+    Vect dr = scalar(obj.vel, dt + (0.5 * obj.accel.x * dt * dt));
+    obj.move(scalar(dr, 100));
 
-    obj.move(scalar(der, 100));
+    if (cData.collisionPoints.size() > 0) {
+        Vect collision;
+        for (int i = 0; i < cData.collisionPoints.size(); i++)
+            collision = add(collision, cData.collisionPoints[i]);
+        collision = scalar(collision, 1 / cData.collisionPoints.size());
+
+        Vect N = subtract(obj.centroid(), collision);
+        N = scalar(N, 1 / sqrtf(N.x * N.x + N.y * N.y));
+        Vect Vr = obj.vel;
+        Vect I = scalar(N, dot(Vr, N));
+        obj.vel = I;
+        if (obj.omega != 0)
+            obj.omega = -1 * 0.2 * (obj.omega / fabsf(obj.omega) * cross(subtract(obj.centroid(), collision), Vr));
+        else
+            obj.omega = -1 * 0.2 * cross(subtract(obj.centroid(), collision), Vr);
+    }
 
     Vect new_a = {f.x / obj.mass, f.y / obj.mass};
-    Vect avg_a = scalar(add(new_a, obj.accel), 0.5);
-    obj.vel = add(obj.vel, scalar(avg_a, dt));
-}
+    Vect dv = scalar(add(new_a, obj.accel), 0.5 * dt);
+    obj.vel = add(obj.vel, dv);
 
-void Impulse::applyRotation(Body& obj, CollData& cData) {
-    if (obj.mass == 0)
-        return;
-
-//    float torque = 0;
-//    float dt = Clock::dt();
-
-    
+//    torque += obj.omega * obj.angDamp;
+//    obj.alpha = torque / obj.density;
+//    obj.omega += obj.alpha * dt;
+//    float deltaTheta = obj.omega * dt;
+//    obj.rotate(deltaTheta, obj.centroid());
 }
 
 void Impulse::resolveCollision(Body& objA, Body& objB, CollData& cData) {

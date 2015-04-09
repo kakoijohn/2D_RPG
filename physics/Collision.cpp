@@ -185,17 +185,18 @@ std::vector<Vect> Collision::findCollidingPoints(Polygon& shapeA, Polygon& shape
 
                 if (isColliding(lineA, lineB)) {
                     float mA = (lineA[0].y - lineA[1].y) / (lineA[0].x - lineA[1].x);
-                    float bA = -mA * lineA[0].x - lineA[0].y;
+                    float bA = lineA[0].y - (mA * lineA[0].x);
 
                     float mB = (lineB[0].y - lineB[1].y) / (lineB[0].x - lineB[1].x);
-                    float bB = -mA * lineB[0].x - lineB[0].y;
+                    float bB = lineB[0].y - (mB * lineB[0].x);
 
-                    float x = (bB - bA) / (mA - mB);
+                    float x;
+                    if ((lineA[0].x - lineA[1].x) == 0 || (lineB[0].x - lineB[1].x) == 0)
+                        x = lineB[0].x;
+                    else
+                        x = (bB - bA) / (mA - mB);
+
                     float y = mA * x + bA;
-
-                    std::cout << "1: y = " << mA << "x + " << bA << "\n";
-                    std::cout << "2: y = " << mB << "x + " << bB << "\n";
-                    std::cout << "x = " << x << ", y= " << y << "\n";
 
                     points.push_back({x, y});
                 }

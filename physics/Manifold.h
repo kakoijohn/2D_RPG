@@ -22,5 +22,5 @@ public:
 
     Manifold();
 
-    void applyInteractions(Body&, Body&, SDL_Renderer*);
+    void applyInteractions(Body&, Body&);
 };

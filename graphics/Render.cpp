@@ -25,7 +25,7 @@ int Render::init(SDL_Window *window) {
     rectangle[2] = {1, 1};
     rectangle[3] = {1, 0};
 
-    rectangle.resize(10);
+    rectangle.resize(50);
     rectangle.set({200, 50});
 
     rectangle.dragCoef = 0.47;
@@ -48,7 +48,7 @@ int Render::init(SDL_Window *window) {
 void Render::updateDisplay() {
     SDL_RenderClear(SDLRender);
 
-    man.applyInteractions(rectangle, base, SDLRender);
+    man.applyInteractions(rectangle, base);
 
 //    if (man.colliding)
         SDL_SetRenderDrawColor(SDLRender, 255, 0, 0, 255);
@@ -63,6 +63,11 @@ void Render::updateDisplay() {
     rectangle.render(SDLRender);
     
     base.render(SDLRender);
+
+    SDL_SetRenderDrawColor(SDLRender, 255, 255, 0, 255);
+    for (int i = 0; i < man.cData.collisionPoints.size(); i++) {
+        SDL_RenderDrawPoint(SDLRender, man.cData.collisionPoints[i].x, man.cData.collisionPoints[i].y);
+    }
 
     SDL_SetRenderDrawColor(SDLRender, 0, 0, 0, 255);
     

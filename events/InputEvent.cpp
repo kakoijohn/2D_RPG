@@ -12,6 +12,7 @@ rapidjson::Document InputEvent::KeyBindings;
 std::vector<eventData> InputEvent::events;
 
 void InputEvent::EventFilter(SDL_Event* event) {
+    clearActive();
     if (!events.empty())
         for (int i = 0; i < events.size(); i++)
             if (event->type == events.at(i).key_binding)

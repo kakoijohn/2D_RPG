@@ -31,7 +31,7 @@ void Display::createWindow(int width, int height) {
 
     //event handlers
 //    SDL_AddEventWatch(EventLog::EventFilter, nullptr);
-    InputEvent::loadInputContext("data/configuration/KeyBindings.json");
+    InputEvent::loadInputContext("data/configuration/key_bindings.json");
     SDL_Event event;
 
     //Renderer
@@ -61,7 +61,6 @@ void Display::createWindow(int width, int height) {
         Clock::tick();
         capTimer = SDL_GetTicks();
 
-        InputEvent::clearActive();
         SDL_PumpEvents();
         while (SDL_PollEvent(&event)) {
             InputEvent::EventFilter(&event);

@@ -34,9 +34,9 @@ void Impulse::applyPhysics(Body& obj, CollData& cData) {
 
         Vect N = subtract(obj.centroid(), collision);
         N = scalar(N, 1 / sqrtf(N.x * N.x + N.y * N.y));
-        Vect Vr = obj.vel;
+        Vect Vr = obj.angVel;
         Vect I = scalar(N, dot(Vr, N));
-        obj.vel = I;
+        obj.angVel = I;
         if (obj.omega != 0)
             obj.omega = -1 * 0.2 * (obj.omega / fabsf(obj.omega) * cross(subtract(obj.centroid(), collision), Vr));
         else
@@ -47,11 +47,11 @@ void Impulse::applyPhysics(Body& obj, CollData& cData) {
     Vect dv = scalar(add(new_a, obj.accel), 0.5 * dt);
     obj.vel = add(obj.vel, dv);
 
-//    torque += obj.omega * obj.angDamp;
-//    obj.alpha = torque / obj.density;
-//    obj.omega += obj.alpha * dt;
-//    float deltaTheta = obj.omega * dt;
-//    obj.rotate(deltaTheta, obj.centroid());
+    torque += obj.omega * obj.angDamp;
+    obj.alpha = torque / obj.density;
+    obj.omega += obj.alpha * dt;
+    float deltaTheta = obj.omega * dt;
+    obj.rotate(deltaTheta, obj.centroid());
 }
 
 void Impulse::resolveCollision(Body& objA, Body& objB, CollData& cData) {
